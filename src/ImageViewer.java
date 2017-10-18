@@ -4,10 +4,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class ImageViewer extends JFrame /*implements ActionListener*/
 {
@@ -17,9 +23,10 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu fileMenu = new JMenu("File");
-
+	
+	private JMenuItem itemSave = new JMenuItem("Save");
 	private JMenuItem itemClose = new JMenuItem("Close");
-
+	
 	public ImageViewer () {
 		this.setTitle("Image Viewer");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,15 +51,34 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		global.add(input);
 		global.add(action);
 		global.add(output);
-
+		
 		this.getContentPane().add(global);
 
+		
+		this.fileMenu.addSeparator();
+		itemSave.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				BufferedImage image = new BufferedImage(output.getWidth(), output.getHeight(), BufferedImage.TYPE_INT_RGB);
+                Graphics2D g = image.createGraphics();
+                output.printAll(g);
+                g.dispose();
+                try {
+					ImageIO.write(image, "png", new File("resultat.png"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+		});
+		
 		this.fileMenu.addSeparator();
 		itemClose.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}        
 		});
+		
+		this.fileMenu.add(itemSave);
 		this.fileMenu.add(itemClose);  
 
 		this.menuBar.add(fileMenu);
