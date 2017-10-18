@@ -54,7 +54,6 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		
 		this.getContentPane().add(global);
 
-		
 		this.fileMenu.addSeparator();
 		itemSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
@@ -65,7 +64,6 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
                 try {
 					ImageIO.write(image, "png", new File("resultat.png"));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
             }
