@@ -55,27 +55,12 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		this.getContentPane().add(global);
 
 		this.fileMenu.addSeparator();
-		itemSave.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				BufferedImage image = new BufferedImage(output.getWidth(), output.getHeight(), BufferedImage.TYPE_INT_RGB);
-                Graphics2D g = image.createGraphics();
-                output.printAll(g);
-                g.dispose();
-                try {
-					ImageIO.write(image, "png", new File("resultat.png"));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-            }
-		});
-		
-		this.fileMenu.addSeparator();
 		itemClose.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}        
 		});
-		
+
 		this.fileMenu.add(itemSave);
 		this.fileMenu.add(itemClose);  
 
