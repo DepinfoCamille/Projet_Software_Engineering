@@ -1,35 +1,19 @@
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import com.sun.javafx.tk.Toolkit;
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.MediaTracker;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
+
 
 public class ImageViewer extends JFrame /*implements ActionListener*/
 {
