@@ -9,6 +9,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.sun.javafx.tk.Toolkit;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -20,6 +21,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.MediaTracker;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
@@ -104,9 +106,14 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		}
 	}
 	
+	
      class Chargement implements ActionListener{
+		
+		
+
 		public void actionPerformed(ActionEvent arg0)
-		{  				
+		{  	
+				
 			JFileChooser ImageChooser = new JFileChooser();  //Selectionner
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE" , "jpg" , "png" , "gif"); //Définir l'extention de l'image
 			ImageChooser.addChoosableFileFilter(filter); //Lien entre  le ImageChooser et le Filter pour definir l'extention que L'imageChooser doit avoir
@@ -115,20 +122,23 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			if (result == JFileChooser.APPROVE_OPTION) // Si on obtient le resultat souhaité
 			{
 				File SelectedImage = ImageChooser.getSelectedFile(); //Srocker l'image choisie dans un fichier
-				String Path = SelectedImage.getAbsolutePath(); // chemin de l'image selectionnée
-				ImageIcon MonImage = new ImageIcon(Path); // c est l image qui va etre utiliser dans l interface, on lui donne le chemin de l'image selectionnee
-			    java.awt.Image Img = MonImage.getImage();//Utiliser le format Image pour plusieurs options supp comme par exemple adapter la taille de l'image
-			    
-			    JLabel MyImag = new JLabel(new ImageIcon(Path));
-			   
+				//String Path = SelectedImage.getAbsolutePath();  chemin de l'image selectionnée
 			
-			    add(MyImag, BorderLayout.WEST);
-			    pack();
-			    
-			    // Probleme de dimension et de position de l'image
+				BufferedImage image = inputImage.getImage();
+				try {
+					image = ImageIO.read(SelectedImage);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				inputImage.setImage(image);
+				repaint();
+		
 			    
 			}
 		}
+
+		
 
      }
 	}
