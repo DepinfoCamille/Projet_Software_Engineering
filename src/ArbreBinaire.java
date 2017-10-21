@@ -2,7 +2,7 @@ import java.util.ArrayList ;
 
 public class ArbreBinaire {
 
-	private class Noeud {
+/*	private class Noeud {
 		
 		protected Noeud filsGauche, filsDroit; 
 		Point point ;
@@ -15,30 +15,36 @@ public class ArbreBinaire {
 		}
 		
 		
-	} 
+	} */
 	
 	boolean planHorizontal ; // renvoie vrai si l'hyperplan associé au noeud est horizontal (même en dimension supérieure à 3, on n'utilise que deux plans pour déterminer fils gauche et fils droit)
 	ArbreBinaire filsGauche ; 
 	ArbreBinaire filsDroit ; 
-	Point etiquette ; 
-	int dim ; 
+	Noeud etiquette ; 
 	
-	ArbreBinaire(Point _etiquette, ArbreBinaire _filsG, ArbreBinaire _filsD, int _dim ) {
+	ArbreBinaire(Noeud _etiquette, ArbreBinaire _filsG, ArbreBinaire _filsD) {
 		this.etiquette = _etiquette ; 
 		this.filsGauche = _filsG ; 
 		this.filsDroit = _filsD ; 
 		this.planHorizontal = true ; // on crée le noeud avec un hyperplan associé, soit (x0,x1, ... xdim-1), soit (x1,..., xdim)
-		this.dim = _dim ; 
 	}
 	
 	
 	public String toString() {
 		
 		if(this.filsGauche==null & this.filsDroit ==null) {
-			return this.etiquette.toString() ;
+			return this.etiquette.point.toString() ;
+		}
+			
+		if(this.filsGauche==null) {
+			return this.etiquette.point.toString()+" ( null , " + this.filsDroit.etiquette.point.toString() + " ) " ; 
+		}
+		
+		if(this.filsDroit==null) {
+			return this.etiquette.point.toString()+" ( " + this.filsGauche.etiquette.point.toString()+ " , null ) " ; 
 		}
 		else {
-			return this.etiquette.toString()+" ( " +this.filsGauche.toString()+ " , " + this.filsDroit.toString() + " ) " ; 
+			return this.etiquette.point.toString()+" ( " +this.filsGauche.etiquette.point.toString()+ " , " + this.filsDroit.etiquette.point.toString() + " ) " ; 
 			
 		}
 		
@@ -46,8 +52,8 @@ public class ArbreBinaire {
 	
 	boolean estaGauche(Point point) { // cette fonction permet de déterminer si le point en entrée est à dans le fils gauche ou droit du noeud/arbre initial (this)
 		if (this.planHorizontal) {
-			for (int i=0 ; i<this.dim ; i++) {
-				if(this.etiquette.distanceAxe(point, i)<0) { // alors on n'est pas dans le demi hyperplan généré par les (x0,..., xdim-1)
+			for (int i=0 ; i<this.etiquette.dim ; i++) {
+				if(this.etiquette.point.distanceAxe(point, i)<0) { // alors on n'est pas dans le demi hyperplan généré par les (x0,..., xdim-1)
 					return false ; 
 				}
 			}
@@ -55,8 +61,8 @@ public class ArbreBinaire {
 		}
 		
 		else {
-			for (int i=1 ; i<this.dim ; i++) {
-				if(this.etiquette.distanceAxe(point, i)<0) { // alors on n'est pas dans le demi hyperplan généré par les (x0,..., xdim-1)
+			for (int i=1 ; i<this.etiquette.dim ; i++) {
+				if(this.etiquette.point.distanceAxe(point, i)<0) { // alors on n'est pas dans le demi hyperplan généré par les (x0,..., xdim-1)
 					return false ; 
 				}
 			}
@@ -68,7 +74,7 @@ public class ArbreBinaire {
 	void addPoint(Point point) { //ajoute un point à l'arbre
 		if (this.estaGauche(point)) {
 			if (this.filsGauche==null) { // dans ce cas, on insère le point au niveau du fils gauche
-				this.filsGauche = new ArbreBinaire(point, null, null, this.dim);  
+				this.filsGauche = new ArbreBinaire(new Noeud(point, this.etiquette.dim), null, null);  
 			}
 			else { // appel récursif
 				filsGauche.addPoint(point) ; 
@@ -76,7 +82,7 @@ public class ArbreBinaire {
 		}
 		else {
 			if (this.filsDroit ==null) { // dans ce cas, on insère le point au niveau du fils droit
-				this.filsDroit = new ArbreBinaire(point, null, null, this.dim);  
+				this.filsDroit = new ArbreBinaire(new Noeud(point, this.etiquette.dim), null, null);  
 			}
 			else { // appel récursif 
 				filsDroit.addPoint(point) ; 
