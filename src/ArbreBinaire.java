@@ -2,7 +2,7 @@ import java.util.ArrayList ;
 
 public class ArbreBinaire {
 
-	private class Noeud {
+/*	private class Noeud {
 		
 		protected Noeud filsGauche, filsDroit; 
 		Point point ;
@@ -16,14 +16,14 @@ public class ArbreBinaire {
 		}
 		
 		
-	} 
+	} */
 	
 	boolean planHorizontal ; // renvoie vrai si l'hyperplan associé au noeud est horizontal (même en dimension supérieure à 3, on n'utilise que deux plans pour déterminer fils gauche et fils droit)
 	ArbreBinaire filsGauche ; 
 	ArbreBinaire filsDroit ; 
 	Noeud etiquette ; 
 	
-	ArbreBinaire(Noeud _etiquette /*, ArbreBinaire _filsG, ArbreBinaire _filsD*/) {
+	ArbreBinaire(Noeud _etiquette) {
 		this.etiquette = _etiquette ; 
 		this.planHorizontal = true ; // on crée le noeud avec un hyperplan associé, soit (x0,x1, ... xdim-1), soit (x1,..., xdim)
 
@@ -70,6 +70,19 @@ public class ArbreBinaire {
 			}
 		}
 	} 
+	
+
+	void setPlan() { // cette fonction fait en sorte qu'on alterne les hyperplans associés aux points, on l'utilise avec true en entrée
+		
+		if (this.filsGauche.etiquette !=null) {
+			this.filsGauche.planHorizontal = !this.planHorizontal ; 
+			this.filsGauche.setPlan() ; 
+		}
+		if (this.filsDroit.etiquette !=null) {
+			this.filsDroit.planHorizontal = !this.planHorizontal ; 
+			this.filsDroit.setPlan() ; 
+		}
+	}
 	
 	boolean estaGauche(Point point/*, boolean plan*/) { // cette fonction permet de déterminer si le point en entrée est  dans le fils gauche ou droit de l'arbre initial (this). A chaque noeud est associé ou bien l'hyperplan (x0...,xdim-1), ou bien l'hyperplan (x1...xdim)
 				
