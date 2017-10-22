@@ -2,7 +2,7 @@ import java.util.ArrayList ;
 
 public class ArbreBinaire {
 
-/*	private class Noeud {
+	private class Noeud {
 		
 		protected Noeud filsGauche, filsDroit; 
 		Point point ;
@@ -16,7 +16,7 @@ public class ArbreBinaire {
 		}
 		
 		
-	} */
+	} 
 	
 	boolean planHorizontal ; // renvoie vrai si l'hyperplan associé au noeud est horizontal (même en dimension supérieure à 3, on n'utilise que deux plans pour déterminer fils gauche et fils droit)
 	ArbreBinaire filsGauche ; 
@@ -30,8 +30,7 @@ public class ArbreBinaire {
 		if (_etiquette!=null){ // dans ce cas elle possède des fils, éventuellement égaux à null
 			this.filsGauche = new ArbreBinaire(_etiquette.filsGauche) ;
 			this.filsDroit = new ArbreBinaire(_etiquette.filsDroit) ;
-		//	this.filsGauche.planHorizontal = !this.planHorizontal ; 
-		//	this.filsDroit.planHorizontal = !this.planHorizontal ; 
+
 		}
 		else{ // dans ce cas, le noeud n'a pas de fils
 
@@ -42,27 +41,25 @@ public class ArbreBinaire {
 	}
 
 	public boolean equals(ArbreBinaire arbre) {
-		if (this.etiquette==arbre.etiquette) {
-			return true ; 
-		}
-		else {
-			return false ; 
-		}
-		
+		return (this.etiquette==arbre.etiquette) ;
+	}
+	
+	public boolean estNul() {
+		return(this.etiquette==null) ; 
 	}
 	
 	public String toString() {
 		
-		if((this.filsGauche.etiquette==null) & (this.filsDroit.etiquette ==null)) { // initialisation : on est au niveau d'une feuille
+		if((this.filsGauche.estNul()) & (this.filsDroit.estNul())) { // initialisation : on est au niveau d'une feuille
 			return this.etiquette.point.toString() ;
 		}
 			
 		else {
-			if(this.filsGauche.etiquette==null) {
+			if(this.filsGauche.estNul()) {
 				return this.etiquette.point.toString()+" ( null , " + this.filsDroit./*etiquette.point.*/toString() + " ) " ; 
 			}
 		
-			if(this.filsDroit.etiquette==null) {
+			if(this.filsDroit.estNul()) {
 				return this.etiquette.point.toString()+" ( " + this.filsGauche./*etiquette.point.*/toString()+ " , null ) " ; 
 			}
 			else {
@@ -74,17 +71,17 @@ public class ArbreBinaire {
 
 	void setPlan() { // cette fonction fait en sorte qu'on alterne les hyperplans associés aux points, on l'utilise avec true en entrée
 		
-		if (this.filsGauche.etiquette !=null) {
+		if (!this.filsGauche.estNul()) {
 			this.filsGauche.planHorizontal = !this.planHorizontal ; 
 			this.filsGauche.setPlan() ; 
 		}
-		if (this.filsDroit.etiquette !=null) {
+		if (!this.filsDroit.estNul()) {
 			this.filsDroit.planHorizontal = !this.planHorizontal ; 
 			this.filsDroit.setPlan() ; 
 		}
 	}
 	
-	boolean estaGauche(Point point/*, boolean plan*/) { // cette fonction permet de déterminer si le point en entrée est  dans le fils gauche ou droit de l'arbre initial (this). A chaque noeud est associé ou bien l'hyperplan (x0...,xdim-1), ou bien l'hyperplan (x1...xdim)
+	boolean estaGauche(Point point) { // cette fonction permet de déterminer si le point en entrée est  dans le fils gauche ou droit de l'arbre initial (this). A chaque noeud est associé ou bien l'hyperplan (x0...,xdim-1), ou bien l'hyperplan (x1...xdim)
 				
 		if (this.planHorizontal) { //parite
 
@@ -109,9 +106,9 @@ public class ArbreBinaire {
 			
 	void addPoint(Point point) { //ajoute un point à l'arbre	
 		
-			if (this.estaGauche(point/*, parite*/)) {
+			if (this.estaGauche(point)) {
 		
-				if (this.etiquette.filsGauche==null) { // dans ce cas, on insère le point au niveau du fils gauche
+				if (this.filsGauche.estNul()) { // dans ce cas, on insère le point au niveau du fils gauche 
 					this.etiquette.filsGauche = new Noeud(point, this.etiquette.dim);  
 					this.filsGauche = new ArbreBinaire(this.etiquette.filsGauche);  
 				}
@@ -120,7 +117,7 @@ public class ArbreBinaire {
 				}
 			}
 			else {
-				if (this.etiquette.filsDroit ==null) { // dans ce cas, on insère le point au niveau du fils droit
+				if (this.filsDroit.estNul()) { // dans ce cas, on insère le point au niveau du fils droit
 					this.etiquette.filsDroit = new Noeud(point, this.etiquette.dim) ; 
 					this.filsDroit = new ArbreBinaire(this.etiquette.filsDroit);  
 				}
