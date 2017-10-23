@@ -31,8 +31,6 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 
 	private JButton buttonAction = new JButton("Action");
 	
-
-
     /*
     int image_h = inputImage.getHeight();
     int image_w  = inputImage.getWidth();
@@ -125,12 +123,11 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 
 		itemCharger.addActionListener(new Chargement());
 		
-
+		this.fileMenu.add(itemCharger);
 		this.fileMenu.add(itemSave);
-
 		this.fileMenu.add(itemClose);  
 		this.menuBar.add(fileMenu);
-		this.fileMenu.add(itemCharger);  
+		  
 		this.setJMenuBar(menuBar);
 
 		this.setVisible(true);
