@@ -2,7 +2,7 @@ import java.util.ArrayList ;
 
 public class ArbreBinaire {
 
-	private class Noeud {
+/*	private class Noeud {
 		
 		protected Noeud filsGauche, filsDroit; 
 		Point point ;
@@ -16,7 +16,7 @@ public class ArbreBinaire {
 		}
 		
 		
-	} 
+	} */
 	
 	boolean planHorizontal ; // renvoie vrai si l'hyperplan associé au noeud est horizontal (même en dimension supérieure à 3, on n'utilise que deux plans pour déterminer fils gauche et fils droit)
 	ArbreBinaire filsGauche ; 
@@ -56,14 +56,14 @@ public class ArbreBinaire {
 			
 		else {
 			if(this.filsGauche.estNul()) {
-				return this.etiquette.point.toString()+" ( null , " + this.filsDroit./*etiquette.point.*/toString() + " ) " ; 
+				return this.etiquette.point.toString()+" ( null , " + this.filsDroit.toString() + " ) " ; 
 			}
 		
 			if(this.filsDroit.estNul()) {
-				return this.etiquette.point.toString()+" ( " + this.filsGauche./*etiquette.point.*/toString()+ " , null ) " ; 
+				return this.etiquette.point.toString()+" ( " + this.filsGauche.toString()+ " , null ) " ; 
 			}
 			else {
-				return this.etiquette.point.toString()+" ( " +this.filsGauche./*etiquette.point.*/toString()+ " , " + this.filsDroit./*etiquette.point.*/toString() + " ) " ; 
+				return this.etiquette.point.toString()+" ( " +this.filsGauche.toString()+ " , " + this.filsDroit.toString() + " ) " ; 
 			}
 		}
 	} 
@@ -127,12 +127,6 @@ public class ArbreBinaire {
 			}
 	}
 	
-	/*
-	Noeud getParent(Noeud noeud) {
-		
-		if (noeud.point =
-		
-	} */
 	
 	void removePoint(Point point) { // enlève un point à l'arbre
 	}
