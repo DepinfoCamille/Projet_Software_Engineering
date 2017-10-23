@@ -1,150 +1,93 @@
 
 public class ArbreBinaire {
-    Noeud racine;
-	public class Point{
-		int dim;
-		int T[]= new int[dim];	/*cr�e un tableau de dim entiers et l'initialise � 0*/	
+
+	private class Noeud {
+		
+		protected Noeud filsGauche, filsDroit; 
+		Point point ;
+		int indice ; 
+		int dim ; 
+	
+		public Noeud(Point point) { // Création d'une sous-classe Noeud, nécessitant un point caractérisant le noeud et la dimension de ce point
+			this.filsGauche = null ; // on initialise les fils aux fils nuls
+			this.filsDroit = null ; 
+			this.point = point ;
+			this.indice = 1 ; 
+			this.dim = point.dim ; 
+		}	
+	} 
+	
+	ArbreBinaire filsGauche ; 
+	ArbreBinaire filsDroit ; 
+	Noeud racine ; 
+	int dim ; 
+	
+	ArbreBinaire() {
+		this.racine = null ; 
+		this.filsGauche = null ; 
+		this.filsDroit = null ;		
+		this.dim = 1 ;
 	}
 	
-	
-	public void set(int x,int p) {
-		x=p;
-	}
-	
-	
-	public void ConstructeurPoint(int dim, Point P,int tab[]){
-		int i;
-		for(i=0; i<dim;i++) {
-			set(tab[i],P.T[i]);
+/*	public String toString() {
+		
+		if((this.filsGauche.estNul()) & (this.filsDroit.estNul())) { // initialisation : on est au niveau d'une feuille
+			return this.etiquette.point.toString() ;
 		}
-	}
-	
-	
-	private class Noeud{
-        Noeud filsGauche;
-        Noeud filsDroit;
-        Point point;
-        int indiceDuPoint;
-    }
-	
-	
-	public void ConstructeurNoeud(Noeud noeud, Point point) {
-		noeud.filsGauche=null;
-		noeud.filsDroit=null;
-		noeud.point=point;
-	}
-	
-/*cas o� dim=1*/
-	
-	private void Inserer1(Point P, Noeud racine) {
-	    if(racine.point==null){
-	    	racine.point =P;	
-	    }	
-	    else {
-	    	if(racine.point.T[0]> P.T[0]) {
-	    		Inserer1(P,racine.filsGauche);
-	    	}
-	    	else {
-	    		Inserer1(P,racine.filsDroit);
-	    	}	
-	    }
-	}
-	
-	
-	
-/*cas o� dim=3*/					
-	
-	private void Inserer(Point P, Noeud racine){
-		Noeud Pere;
-		Point M;
-		if(racine.point==null) {
-		    racine.point=P;
-		}
+			
 		else {
-			Pere=this.racine;
-			M=Pere.point;
-			if(P.T[0]<M.T[0]) {
-				if(Pere.filsGauche==null) {
-				     Pere.filsGauche.point=P;
-				}
-				else
-				{
-					if(P.T[1]<M.T[1]) {
-						Pere=Pere.filsGauche;
-				    	 if(Pere.filsGauche==null) {
-				    		 Pere.filsGauche.point=P;
-				    	 }
-				    	 else
-				    	 {
-				    		 if(P.T[2]<M.T[2]) {
-				    			 Pere=Pere.filsGauche;
-				    			 if(Pere.filsGauche==null) {
-				    				 Pere.filsGauche.point=P;
-				    			 }
-				    			 else {
-				    				 Pere=Pere.filsGauche;
-				    				 Inserer(P,Pere);
-				    			 }
-				    		 }
-				    		 else {
-				    			 Pere=Pere.filsDroit;
-				    			 if(Pere.filsDroit==null) {
-				    				 Pere.filsDroit.point=P;
-				    			 }
-				    			 else {
-				    				 Pere=Pere.filsDroit;
-				    				 Inserer(P,Pere);
-				    			 }
-				    		 }
-				    			 
-				    			 
-				    	 }
-				     }
-					else {
-						if(Pere.filsDroit==null) {
-							Pere.filsDroit.point=P;
-						}
-						else {
-							Pere=Pere.filsDroit;
-							if(P.T[2]<M.T[2]) {
-								if(Pere.filsGauche==null)
-								{
-									Pere.filsGauche.point=P;
-								}
-								else {
-									Inserer(P,Pere.filsGauche);
-								}
-							
-							}
-						}
-					}
-				}
-								/*P.T[2]>=M.T[2]*/
-								
-							
-						
-						
-						
-					
+			if(this.filsGauche.estNul()) {
+				return this.etiquette.point.toString()+" ( null , " + this.filsDroit.toString() + " ) " ; 
+			}
+		
+			if(this.filsDroit.estNul()) {
+				return this.etiquette.point.toString()+" ( " + this.filsGauche.toString()+ " , null ) " ; 
+			}
+			else {
+				return this.etiquette.point.toString()+" ( " +this.filsGauche.toString()+ " , " + this.filsDroit.toString() + " ) " ; 
+			}
+		}
+	} */
+		
+	boolean estaGauche(Point point, int indice) { // cette fonction permet de déterminer si le point en entrée est  dans le fils gauche ou droit de l'arbre initial (this). A chaque noeud est associé ou bien l'hyperplan (x0...,xdim-1), ou bien l'hyperplan (x1...xdim)
 				
-				
-					/*refaire ce que j'ai fait pour la partie gauche*/
-			
+		for (int i=0 ; i<this.dim ; i++) {
+			if (i!=indice) {
+				if(this.racine.point.distanceAxe(point, i)<0) { // alors on n'est pas dans le demi hyperplan généré par les (x0,.xindice-1, xindice+1,..., xdim)
+					return false ;
+				}
+			}
+		}
+		return true ; //on est dans le demi hyperplan généré par les (x0,..., xdim-1)
+		
 	}
+			
+	void addPointAux(Point point, int i) { //ajoute un point à l'arbre	
+		
+		if (this.racine==null) { // l'arbre est vide
+			this.racine = new Noeud(point) ; 
+			this.dim = point.dim ; 
+			
+			if(i==this.dim){
+				this.racine.indice = 1 ;
+			}
+			else {
+				this.racine.indice=i ; 
+			}
+		}
+		
+		else {
+			if(this.estaGauche(point, this.racine.indice)) {
+				this.filsGauche.addPointAux(point, i+1) ; 
+			}
+			else {
+				this.filsDroit.addPointAux(point, i+1) ; 
+			}			
 		}
 	}
 	
-			
-			
-	
-	
-	public ArbreBinaire addPoint( ArbreBinaire arbre, Point P) {
-        if (P.dim==1) {
-        	Inserer1(P,arbre.racine);
-        }
-        else {
-        	Inserer(P,arbre.racine);
-        }
-		return arbre;
+	void addPoint(Point point){
+		addPointAux(point, 1) ; 
 	}
+		
 }
