@@ -1,57 +1,150 @@
-import java.util.ArrayList ; 
 
 public class ArbreBinaire {
+    Noeud racine;
+	public class Point{
+		int dim;
+		int T[]= new int[dim];	/*cr�e un tableau de dim entiers et l'initialise � 0*/	
+	}
 	
-	private class Noeud {
-		
-		protected Noeud filsGauche, filsDroit; 
-		Point point ;
-		int dim ; 
 	
-		Noeud(Point point,int dim) { // Création d'une sous-classe Noeud, nécessitant un point caractérisant le noeud et la dimension de ce point
-			this.filsGauche = null ; // on initialise les fils aux fils nuls
-			this.filsDroit = null ; 
-			this.point = point ;
+	public void set(int x,int p) {
+		x=p;
+	}
+	
+	
+	public void ConstructeurPoint(int dim, Point P,int tab[]){
+		int i;
+		for(i=0; i<dim;i++) {
+			set(tab[i],P.T[i]);
 		}
 	}
-		
-	void addPoint(Point point) { //ajoute un point à l'arbre
+	
+	
+	private class Noeud{
+        Noeud filsGauche;
+        Noeud filsDroit;
+        Point point;
+        int indiceDuPoint;
+    }
+	
+	
+	public void ConstructeurNoeud(Noeud noeud, Point point) {
+		noeud.filsGauche=null;
+		noeud.filsDroit=null;
+		noeud.point=point;
+	}
+	
+/*cas o� dim=1*/
+	
+	private void Inserer1(Point P, Noeud racine) {
+	    if(racine.point==null){
+	    	racine.point =P;	
+	    }	
+	    else {
+	    	if(racine.point.T[0]> P.T[0]) {
+	    		Inserer1(P,racine.filsGauche);
+	    	}
+	    	else {
+	    		Inserer1(P,racine.filsDroit);
+	    	}	
+	    }
 	}
 	
 	
-	void removePoint(Point point) { // enlève un point à l'arbre
+	
+/*cas o� dim=3*/					
+	
+	private void Inserer(Point P, Noeud racine){
+		Noeud Pere;
+		Point M;
+		if(racine.point==null) {
+		    racine.point=P;
+		}
+		else {
+			Pere=this.racine;
+			M=Pere.point;
+			if(P.T[0]<M.T[0]) {
+				if(Pere.filsGauche==null) {
+				     Pere.filsGauche.point=P;
+				}
+				else
+				{
+					if(P.T[1]<M.T[1]) {
+						Pere=Pere.filsGauche;
+				    	 if(Pere.filsGauche==null) {
+				    		 Pere.filsGauche.point=P;
+				    	 }
+				    	 else
+				    	 {
+				    		 if(P.T[2]<M.T[2]) {
+				    			 Pere=Pere.filsGauche;
+				    			 if(Pere.filsGauche==null) {
+				    				 Pere.filsGauche.point=P;
+				    			 }
+				    			 else {
+				    				 Pere=Pere.filsGauche;
+				    				 Inserer(P,Pere);
+				    			 }
+				    		 }
+				    		 else {
+				    			 Pere=Pere.filsDroit;
+				    			 if(Pere.filsDroit==null) {
+				    				 Pere.filsDroit.point=P;
+				    			 }
+				    			 else {
+				    				 Pere=Pere.filsDroit;
+				    				 Inserer(P,Pere);
+				    			 }
+				    		 }
+				    			 
+				    			 
+				    	 }
+				     }
+					else {
+						if(Pere.filsDroit==null) {
+							Pere.filsDroit.point=P;
+						}
+						else {
+							Pere=Pere.filsDroit;
+							if(P.T[2]<M.T[2]) {
+								if(Pere.filsGauche==null)
+								{
+									Pere.filsGauche.point=P;
+								}
+								else {
+									Inserer(P,Pere.filsGauche);
+								}
+							
+							}
+						}
+					}
+				}
+								/*P.T[2]>=M.T[2]*/
+								
+							
+						
+						
+						
+					
+				
+				
+					/*refaire ce que j'ai fait pour la partie gauche*/
+			
+	}
+		}
 	}
 	
-	Noeud getNearestNeighbor(Noeud noeud) { // trouve le noeud le plus proche du noeud en entrée
-		
-		return null ;
-	}
-
+			
+			
 	
+	
+	public ArbreBinaire addPoint( ArbreBinaire arbre, Point P) {
+        if (P.dim==1) {
+        	Inserer1(P,arbre.racine);
+        }
+        else {
+        	Inserer(P,arbre.racine);
+        }
+		return arbre;
+	}
 }
-	
-/* Indications pour la suite : 
-
-private Noeud getParent(Noeud n, Point p) peut être récursive ou itérative
-
-	if n.getParent(n.d)-p.get(n.d)>0){
-		if(n.filsGauche ==null return n ; 
-		else return getParent(filsGauche, p) ;
-	}
-}
-
-void addPoint(Point p){
-
-	if(root == null) {
-		root = nouveaunoeud ;
-	}
-	else {
-		noeud  = getParent(root, p)
-	}
-	
-	if (A.getParent(a.d)-p.get(A.d)>0) A.fils = new Noeud(p,d) ; 
-	
-
-
-
-*/
