@@ -26,10 +26,12 @@ public class Main {
 		Noeud noeudA = new Noeud(pointA,3) ;
 	//	noeudA.filsDroit = noeudC ; 
 		
-		ArbreBinaire B = new ArbreBinaire(noeudB) ; 
+		ArbreBinaire A = new ArbreBinaire() ; 
+		
+	/*	ArbreBinaire B = new ArbreBinaire(noeudB) ; 
 		ArbreBinaire C = new ArbreBinaire(noeudC/*, null, null*/) ; 
 
-		System.out.println("B : " + B) ;
+	/*	System.out.println("B : " + B) ;
 		
 		B.setPlan(); 
 		B.addPoint(pointD) ; 
@@ -83,7 +85,10 @@ public class Main {
 		if (C.filsGauche.estNul()){
 			System.out.println(" estNul fonctionne") ; 
 
-		}
+		} */
+		
+		
+		
 
 }
 }

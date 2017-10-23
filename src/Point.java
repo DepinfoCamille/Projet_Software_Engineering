@@ -1,15 +1,18 @@
 public class Point {
 	
 	protected int coordonnees[];
+	int dim ; 
 	
-	Point(int coord[]) {
+	Point(int coord[], int dim) {
 		this.coordonnees = coord ; 
+		this.dim = dim ; 
 	}
 	
 	public int getCoord(int x) {
-		return coordonnees[x];
+		return this.coordonnees[x];
+
 	}
-	
+		
 	public int distance(Point p) {
 		
 		int dist = 0;
