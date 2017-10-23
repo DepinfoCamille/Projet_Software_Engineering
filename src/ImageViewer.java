@@ -10,13 +10,13 @@ import javax.swing.JFileChooser;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 
-
-
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
 import java.io.File;
 import java.io.IOException;
 
@@ -183,6 +183,9 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 				}
 				inputImage.setImage(image);
 				repaint();
+				
+				
+
 		
 			    //
 			}
@@ -190,6 +193,15 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 
 		
 
+     }
+     public Color[] generateColors(int n)
+     {
+         Color[] cols = new Color[n];
+         for(int i = 0; i < n; i++)
+         {
+             cols[i] = Color.getHSBColor((float) i / (float) n, 0.85f, 1.0f);
+         }
+         return cols;
      }
 	}
 
