@@ -92,9 +92,6 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	
 	
      class Chargement implements ActionListener{
-		
-		
-
 		public void actionPerformed(ActionEvent arg0)
 		{  	
 				
@@ -118,7 +115,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 				inputImage.setImage(image);
 				repaint();
 		
-			    
+			    //
 			}
 		}
 
