@@ -35,8 +35,9 @@ public class Posterisation {
 		return image_sortante;
 	}
 
+
 }
-=======
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
@@ -72,6 +73,8 @@ public class Posterisation {
 		
 		return image_sortante;
 	}
+
+}
 
 }
 

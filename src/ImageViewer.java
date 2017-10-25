@@ -23,6 +23,8 @@ import java.awt.image.IndexColorModel;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.ArrayList;
+
 
 @SuppressWarnings("serial")
 
@@ -34,8 +36,6 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 
 	private JButton buttonAction = new JButton("Action");
 	
-
-
     /*
     int image_h = inputImage.getHeight();
     int image_w  = inputImage.getWidth();
@@ -44,6 +44,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
     BufferedImage image_sortante = new BufferedImage(image_h, image_w, inputImage.getType());
     */
 	
+	private JButton buttonPalette = new JButton("Palette");
 	private JButton buttonPosteriser = new JButton("Posteriser");
 	private JButton buttonCompresser = new JButton("Compresser");
 
@@ -68,14 +69,16 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		input.setLayout(new BoxLayout(input, BoxLayout.PAGE_AXIS));
 		input.add(inputImage);
 
-
 		JPanel action = new JPanel();
 		action.setLayout(new BoxLayout(action, BoxLayout.PAGE_AXIS));
 		action.add(buttonAction);
 		
-
+		JPanel pal = new JPanel();
+		pal.setLayout(new BoxLayout(pal, BoxLayout.PAGE_AXIS));
+		pal.add(buttonPalette);
+		// Defines action associated to buttons
+		buttonPalette.addActionListener(new ButtonListener());
 		
-
 		JPanel post = new JPanel();
 		post.setLayout(new BoxLayout(post, BoxLayout.PAGE_AXIS));
 		post.add(buttonPosteriser);
@@ -96,6 +99,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		JPanel global = new JPanel();
 		global.setLayout(new BoxLayout(global, BoxLayout.LINE_AXIS));
 		global.add(input);
+		global.add(pal);
 		global.add(post);
 		global.add(compress);
 		global.add(output);
@@ -105,11 +109,8 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		this.fileMenu.addSeparator();
 		itemSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				BufferedImage image_a_sauver = new BufferedImage(output.getWidth(), output.getHeight(), BufferedImage.TYPE_INT_RGB);
-                Graphics2D g = image_a_sauver.createGraphics();
-                output.printAll(g);
                 try {
-					ImageIO.write(image_a_sauver, "png", new File("image_finale.png"));
+					ImageIO.write(ouputImage.getImage(), "png", new File("image_finale.png"));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -121,19 +122,15 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			} 
-			
-		
 		});
-		
 
 		itemCharger.addActionListener(new Chargement());
 		
-
+		this.fileMenu.add(itemCharger);
 		this.fileMenu.add(itemSave);
-
 		this.fileMenu.add(itemClose);  
 		this.menuBar.add(fileMenu);
-		this.fileMenu.add(itemCharger);  
+		  
 		this.setJMenuBar(menuBar);
 
 		this.setVisible(true);
@@ -157,9 +154,42 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 				System.out.println("Posterisation achevée");
 			}
 			
+			else if (arg0.getSource() == buttonPalette) {
+				
+				BufferedImage image_entrante = inputImage.getImage();
+				ArrayList<Point3> palette_couleurs = new ArrayList<Point3>();
+				
+				Point3 col1 = new Point3(54,100,92);
+				Point3 col2 = new Point3(154,50,75);
+				Point3 col3 = new Point3(200,100,150);
+				
+				palette_couleurs.add(col1);
+				palette_couleurs.add(col2);
+				palette_couleurs.add(col3);
+				
+				BufferedImage image_palette = new BufferedImage(palette_couleurs.size()*10, 10, image_entrante.getType());
+
+				for (int i = 0; i < palette_couleurs.size(); i++) {
+					
+					Color couleur = new Color(palette_couleurs.get(i).getCoord(0),palette_couleurs.get(i).getCoord(1),palette_couleurs.get(i).getCoord(2));
+
+				    for (int y = 0; y < 10; y++) {
+				        for (int x = 0; x < 10; x++) {
+				        	int rgb = couleur.getRGB();
+				            image_palette.setRGB(x+i*10,y,rgb);
+				         }
+				    }
+				}
+				
+				ouputImage.setImage(image_palette);
+				repaint();
+			}
+			
+			
 			else if (arg0.getSource() == buttonCompresser) {
 				System.out.println("Compression achevée");
 			}
+		
 			
 		}
 	}
@@ -188,11 +218,15 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 				}
 				inputImage.setImage(image);
 				repaint();
+
 				
 				
 
 		
 			    //
+
+
+
 			}
 		}
 
