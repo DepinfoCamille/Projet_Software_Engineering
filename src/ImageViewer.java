@@ -4,6 +4,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import javafx.scene.image.Image;
+
 import javax.swing.JButton;
 
 import javax.swing.JFileChooser;
@@ -77,14 +80,14 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		post.setLayout(new BoxLayout(post, BoxLayout.PAGE_AXIS));
 		post.add(buttonPosteriser);
 		// Defines action associated to buttons
-		buttonPosteriser.addActionListener(new ButtonListener());
+	//	buttonPosteriser.addActionListener(new ButtonListener());
 		
 		JPanel compress = new JPanel();
 		compress.setLayout(new BoxLayout(compress, BoxLayout.PAGE_AXIS));
 		compress.add(buttonCompresser);
 
 		// Defines action associated to buttons
-		buttonCompresser.addActionListener(new ButtonListener());
+	//	buttonCompresser.addActionListener(new ButtonListener());
 
 		JPanel output = new JPanel();
 		output.setLayout(new BoxLayout(output, BoxLayout.PAGE_AXIS));
@@ -140,6 +143,8 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	/**
 	 * Class listening to a given button
 	 */
+	
+	/*
 	class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) 
 		{
@@ -158,7 +163,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			
 		}
 	}
-	
+	*/
 	
      class Chargement implements ActionListener{
 		public void actionPerformed(ActionEvent arg0)
@@ -194,16 +199,15 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		
 
      }
-     public Color[] generateColors(int n)
-     {
-         Color[] cols = new Color[n];
-         for(int i = 0; i < n; i++)
-         {
-             cols[i] = Color.getHSBColor((float) i / (float) n, 0.85f, 1.0f);
-         }
-         return cols;
+     
+    
+      
+
+      
      }
-	}
+
+   
+	
 
 		
 	
