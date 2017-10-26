@@ -1,99 +1,3 @@
-
-
-public class ArbreBinaire {
-
-	private class Noeud {
-		
-		protected Noeud filsGauche, filsDroit; 
-		Point point ;
-		int indice ; 
-		int dim ; 
-	
-		public Noeud(Point point) { // Cr√©ation d'une sous-classe Noeud, n√©cessitant un point caract√©risant le noeud et la dimension de ce point
-			this.filsGauche = null ; // on initialise les fils aux fils nuls
-			this.filsDroit = null ; 
-			this.point = point ;
-			this.indice = 1 ; 
-			this.dim = point.dim ; 
-		}	
-	} 
-	
-	ArbreBinaire filsGauche ; 
-	ArbreBinaire filsDroit ; 
-	Noeud racine ; 
-	int dim ; 
-	
-	ArbreBinaire() {
-		this.racine = null ; 
-		this.filsGauche = null ; 
-		this.filsDroit = null ;		
-		this.dim = 1 ;
-	}
-	
-/*	public String toString() {
-		
-		if((this.filsGauche.estNul()) & (this.filsDroit.estNul())) { // initialisation : on est au niveau d'une feuille
-			return this.etiquette.point.toString() ;
-		}
-			
-		else {
-			if(this.filsGauche.estNul()) {
-				return this.etiquette.point.toString()+" ( null , " + this.filsDroit.toString() + " ) " ; 
-			}
-		
-			if(this.filsDroit.estNul()) {
-				return this.etiquette.point.toString()+" ( " + this.filsGauche.toString()+ " , null ) " ; 
-			}
-			else {
-				return this.etiquette.point.toString()+" ( " +this.filsGauche.toString()+ " , " + this.filsDroit.toString() + " ) " ; 
-			}
-		}
-	} */
-		
-	boolean estaGauche(Point point, int indice) { // cette fonction permet de d√©terminer si le point en entr√©e est  dans le fils gauche ou droit de l'arbre initial (this). A chaque noeud est associ√© ou bien l'hyperplan (x0...,xdim-1), ou bien l'hyperplan (x1...xdim)
-				
-		for (int i=0 ; i<this.dim ; i++) {
-			if (i!=indice) {
-				if(this.racine.point.distanceAxe(point, i)<0) { // alors on n'est pas dans le demi hyperplan g√©n√©r√© par les (x0,.xindice-1, xindice+1,..., xdim)
-					return false ;
-				}
-			}
-		}
-		return true ; //on est dans le demi hyperplan g√©n√©r√© par les (x0,..., xdim-1)
-		
-	}
-			
-	void addPointAux(Point point, int i) { //ajoute un point √† l'arbre	
-		
-		if (this.racine==null) { // l'arbre est vide
-			this.racine = new Noeud(point) ; 
-			this.dim = point.dim ; 
-			
-			if(i==this.dim){
-				this.racine.indice = 1 ;
-			}
-			else {
-				this.racine.indice=i ; 
-			}
-		}
-		
-		else {
-			if(this.estaGauche(point, this.racine.indice)) {
-				this.filsGauche.addPointAux(point, i+1) ; 
-			}
-			else {
-				this.filsDroit.addPointAux(point, i+1) ; 
-			}			
-		}
-	}
-	
-	void addPoint(Point point){
-		addPointAux(point, 1) ; 
-	}
-		
-}
-
-
 public class ArbreBinaire {
 
 	private class Noeud {
@@ -102,7 +6,7 @@ public class ArbreBinaire {
 		int indice ; 
 		int dim ; 
 	
-		public Noeud(Point point) { // Cr√©ation d'une sous-classe Noeud, n√©cessitant un point caract√©risant le noeud et la dimension de ce point
+		public Noeud(Point point) { // CrÈation d'une sous-classe Noeud, nÈcessitant un point caractÈrisant le noeud et la dimension de ce point
 
 			this.point = point ;
 			this.indice = 1 ; 
@@ -119,14 +23,14 @@ public class ArbreBinaire {
 	Noeud racine ; 
 	int dim ; 
 	
-	ArbreBinaire() { // cr√©e un arbre vide 
+	ArbreBinaire() { // crÈe un arbre vide 
 		this.racine = null ; 
 		this.filsGauche = null ; 
 		this.filsDroit = null ;		
 		this.dim = 1 ;
 	}
 	
-	ArbreBinaire(Point point) { // cr√©e un arbre √† partir d'un point
+	ArbreBinaire(Point point) { // crÈe un arbre ‡ partir d'un point
 		this.racine = new Noeud(point) ; 
 		this.filsGauche = null ; 
 		this.filsDroit = null ;		
@@ -165,23 +69,23 @@ public class ArbreBinaire {
 		}
 	} 
 		
-	boolean estaGauche(Point point) { // cette fonction permet de d√©terminer si le point en entr√©e est  dans le fils gauche ou droit de l'arbre initial (this). A chaque noeud est associ√© ou bien l'hyperplan (x0...,xdim-1), ou bien l'hyperplan (x1...xdim)
+	boolean estaGauche(Point point) { // cette fonction permet de dÈterminer si le point en entrÈe est  dans le fils gauche ou droit de l'arbre initial (this). A chaque noeud est associÈ ou bien l'hyperplan (x0...,xdim-1), ou bien l'hyperplan (x1...xdim)
 				
 		int indice = this.racine.indice ; 
 		for (int i=0 ; i<this.dim ; i++) {
 			if (i!=indice) {
-				if(this.racine.point.distanceAxe(point, i)<0) { // alors on n'est pas dans le demi hyperplan g√©n√©r√© par les (x0,.xindice-1, xindice+1,..., xdim)
+				if(this.racine.point.distanceAxe(point, i)<0) { // alors on n'est pas dans le demi hyperplan gÈnÈrÈ par les (x0,.xindice-1, xindice+1,..., xdim)
 					return false ;
 				}
 			}
 		}
-		return true ; //on est dans le demi hyperplan g√©n√©r√© par les (x0,..., xdim-1)
+		return true ; //on est dans le demi hyperplan gÈnÈrÈ par les (x0,..., xdim-1)
 		
 	}
 			
-	void addPointAux(Point point, int i) { //ajoute un point √† l'arbre, cette fonction auxiliaire permet de gardr l'indice i correspondant √† l'hyperplan du p√®re en m√©moire
+	void addPointAux(Point point, int i) { //ajoute un point ‡ l'arbre, cette fonction auxiliaire permet de gardr l'indice i correspondant ‡ l'hyperplan du pËre en mÈmoire
 		
-		if (this.racine==null) { // l'emplacement est libre, on peut donc cr√©er une feuille noeud
+		if (this.racine==null) { // l'emplacement est libre, on peut donc crÈer une feuille noeud
 			
 			this.dim = point.dim ; 
 
@@ -201,7 +105,7 @@ public class ArbreBinaire {
 			}
 		}
 		
-		else { // r√©currence 
+		else { // rÈcurrence 
 			if(this.estaGauche(point)) {
 
 				this.filsGauche.addPointAux(point, i+1) ; 
@@ -213,7 +117,7 @@ public class ArbreBinaire {
 		}
 	}
 	
-	void addPoint(Point point){ // c'est la v√©ritable fonction addPoint, qui est la fonction addPointAux initialis√©e √† 1 (i.e la racine de l'arbre a un hyperplan d'indice 1)
+	void addPoint(Point point){ // c'est la vÈritable fonction addPoint, qui est la fonction addPointAux initialisÈe ‡ 1 (i.e la racine de l'arbre a un hyperplan d'indice 1)
 		addPointAux(point, 1) ; 
 	}
 	
@@ -235,9 +139,9 @@ public class ArbreBinaire {
 	}
 		
 	
-	void removePointAux(Point point, ArbreBinaire root) { // on commence la r√©currence apr√®s la racine, appel√©e root
+	void removePointAux(Point point, ArbreBinaire root) { // on commence la rÈcurrence aprËs la racine, appelÈe root
 		
-		if (this == root) { // dans ce cas, on applique removePoint √† un de ses fils
+		if (this == root) { // dans ce cas, on applique removePoint ‡ un de ses fils
 			
 			if (this.estaGauche(point)){ 
 				this.filsGauche.removePointAux(point, root) ; 
@@ -250,9 +154,9 @@ public class ArbreBinaire {
 		}
 		
 		else {
-			ArbreBinaire pere = root.getParent(this.racine.point) ; // On identifie le p√®re de l'arbre dans lequel on est
+			ArbreBinaire pere = root.getParent(this.racine.point) ; // On identifie le pËre de l'arbre dans lequel on est
 			
-			if (pere.filsGauche ==this) { // le point recherch√© est le fils gauche de son p√®re
+			if (pere.filsGauche ==this) { // le point recherchÈ est le fils gauche de son pËre
 				
 				if (this.filsGauche.estNul() & this.filsDroit.estNul()) { // on est au niveau d'une feuille, il suffit de la supprimer 
 						this.racine = null ;
@@ -261,14 +165,14 @@ public class ArbreBinaire {
 				}
 				else {
 					Point mem = this.filsGauche.racine.point ; 
-					this.racine = this.filsDroit.racine ; // L'arbre consid√©r√© prend tous les attributs de son fils
+					this.racine = this.filsDroit.racine ; // L'arbre considÈrÈ prend tous les attributs de son fils
 					this.filsGauche = this.filsDroit.filsGauche ; 
 					this.filsDroit = this.filsDroit.filsDroit ; 
-					this.addPoint(mem) ; 				// on ins√®re le fils gauche de l'ancien arbre au nouveau
+					this.addPoint(mem) ; 				// on insËre le fils gauche de l'ancien arbre au nouveau
 				}			
 			}
 			
-			else if (pere.filsDroit ==this) { // le point recherch√© est le fils droit de son p√®re
+			else if (pere.filsDroit ==this) { // le point recherchÈ est le fils droit de son pËre
 	
 					if (this.filsGauche.estNul() & this.filsDroit.estNul()) { // on supprime la feuille
 						this.racine = null ; 
@@ -277,14 +181,14 @@ public class ArbreBinaire {
 					}
 					else {
 						Point mem = this.filsDroit.racine.point ; 
-						this.racine = this.filsGauche.racine ; // L'arbre consid√©r√© prend tous les attributs de son fils
+						this.racine = this.filsGauche.racine ; // L'arbre considÈrÈ prend tous les attributs de son fils
 						this.filsDroit = this.filsGauche.filsDroit ; 
 						this.filsGauche = this.filsGauche.filsGauche ; 
-						this.addPoint(mem) ; 				// on ins√®re le fils droit de l'ancien arbre au nouveau
+						this.addPoint(mem) ; 				// on insËre le fils droit de l'ancien arbre au nouveau
 					}			
 			}
 			
-			else { // le point recherch√© n'est dans aucun des fils, il faut alors chercher plus profond√©ment dans l'arbre
+			else { // le point recherchÈ n'est dans aucun des fils, il faut alors chercher plus profondÈment dans l'arbre
 				if (this.estaGauche(point)){ 
 					this.filsGauche.removePointAux(point, root) ; 
 				}
@@ -300,6 +204,5 @@ public class ArbreBinaire {
 	void removePoint(Point point) {
 		removePointAux(point, this) ; 
 	}
-
+	 
 }
-
