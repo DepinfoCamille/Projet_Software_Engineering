@@ -4,22 +4,18 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import javafx.scene.image.Image;
-
 import javax.swing.JButton;
 
 import javax.swing.JFileChooser;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.IndexColorModel;
 import java.io.File;
 import java.io.IOException;
 
@@ -35,6 +31,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	private DisplayedImage ouputImage = new DisplayedImage();
 
 	private JButton buttonAction = new JButton("Action");
+	private JButton buttonref = new JButton("Quantification");
 	
     /*
     int image_h = inputImage.getHeight();
@@ -47,8 +44,9 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	private JButton buttonPalette = new JButton("Palette");
 	private JButton buttonPosteriser = new JButton("Posteriser");
 	private JButton buttonCompresser = new JButton("Compresser");
-	//histogram button
-	private JButton buttonHistogramme = new JButton("Histogramme");
+
+
+	
 
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu fileMenu = new JMenu("File");
@@ -74,31 +72,31 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		action.setLayout(new BoxLayout(action, BoxLayout.PAGE_AXIS));
 		action.add(buttonAction);
 		
+		JPanel ref = new JPanel();
+		ref.setLayout(new BoxLayout(ref, BoxLayout.PAGE_AXIS));
+		
+		
 		JPanel pal = new JPanel();
 		pal.setLayout(new BoxLayout(pal, BoxLayout.PAGE_AXIS));
 		pal.add(buttonPalette);
 		// Defines action associated to buttons
-		buttonPalette.addActionListener(new ButtonListener());
+	//	buttonPalette.addActionListener(new ButtonListener());
 		
 		JPanel post = new JPanel();
 		post.setLayout(new BoxLayout(post, BoxLayout.PAGE_AXIS));
 		post.add(buttonPosteriser);
 		// Defines action associated to buttons
-	//	buttonPosteriser.addActionListener(new ButtonListener());
+		//buttonPosteriser.addActionListener(new ButtonListener());
 		
 		JPanel compress = new JPanel();
 		compress.setLayout(new BoxLayout(compress, BoxLayout.PAGE_AXIS));
 		compress.add(buttonCompresser);
 		
-		//histogram button
-//		JPanel histogramme = new JPanel();
-//		post.setLayout(new BoxLayout(post, BoxLayout.PAGE_AXIS));
-		post.add(buttonHistogramme);
-		// Defines action associated to buttons
-		buttonHistogramme.addActionListener(new ButtonHistogramme());
-		
-		
-		
+		JPanel ref1 = new JPanel();
+		ref1.setLayout(new BoxLayout(ref1, BoxLayout.PAGE_AXIS));
+		ref1.add(buttonref);
+		buttonref.addActionListener(new Quantization());
+
 		// Defines action associated to buttons
 	//	buttonCompresser.addActionListener(new ButtonListener());
 
@@ -112,7 +110,10 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		global.add(pal);
 		global.add(post);
 		global.add(compress);
+		global.add(ref1);
+	
 		global.add(output);
+		
 		
 		this.getContentPane().add(global);
 
@@ -146,33 +147,10 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		this.setVisible(true);
 		
 	}
-    
-	  /*void display() {
-	        JFrame f = new JFrame("Histogram");
-	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        f.add(createChartPanel());
-	        f.add(createControlPanel(), BorderLayout.SOUTH);
-	        f.add(new JLabel(new ImageIcon(image)), BorderLayout.WEST);
-	        f.pack();
-	        f.setLocationRelativeTo(null);
-	        f.setVisible(true);
-	    }*/
-	
-	class ButtonHistogramme implements ActionListener{
-		public void actionPerformed(ActionEvent arg0) 
-		{
-			
-			 EventQueue.invokeLater(() -> {
-		            new Histogramme().display();
-		        });
-		}
-	}
-	
-	
+
 	/**
 	 * Class listening to a given button
 	 */
-	
 	/*
 	class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) 
@@ -225,12 +203,12 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			
 		}
 	}
-	*/
 	
+	*/
      class Chargement implements ActionListener{
 		public void actionPerformed(ActionEvent arg0)
 		{  	
-				
+			
 			JFileChooser ImageChooser = new JFileChooser();  //Selectionner
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE" , "jpg" , "png" , "gif"); //Définir l'extention de l'image
 			ImageChooser.addChoosableFileFilter(filter); //Lien entre  le ImageChooser et le Filter pour definir l'extention que L'imageChooser doit avoir
@@ -239,7 +217,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			if (result == JFileChooser.APPROVE_OPTION) // Si on obtient le resultat souhaité
 			{
 				File SelectedImage = ImageChooser.getSelectedFile(); //Srocker l'image choisie dans un fichier
-				//String Path = SelectedImage.getAbsolutePath();  chemin de l'image selectionnée
+			//	String Path = SelectedImage.getAbsolutePath();  chemin de l'image selectionnée
 			
 				BufferedImage image = inputImage.getImage();
 				try {
@@ -250,35 +228,32 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 				}
 				inputImage.setImage(image);
 				repaint();
-
-				
-				
-
-		
-			    //
-
-
-
-			}
+				}
 		}
-
-		
-
-     }
-<<<<<<< HEAD
+			
+	
+}
      
+         class Quantization implements ActionListener{
+    			public void actionPerformed(ActionEvent arg0)
+    			{  	   
+    				final int MASK = 0xfff0f0f0;    			
+    				 int w = inputImage.getWidth();
+    			     int h = inputImage.getHeight();
+    			     BufferedImage result = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    			     BufferedImage image = inputImage.getImage();
+    			     for(int x=0; x< w; x++){
+    			            for(int y=0; y< h; y++){
+    			            	 result.setRGB(x,y, ( image.getRGB(x, y) & MASK));
+    			            }
+    			            ouputImage.setImage(result);
+    						repaint();
+
+    			     }
+    			           
+    		    	          
+     }}}
+			
+				
     
-      
-
-      
-     }
-
-   
-	
-
-		
-	
-	
-=======
-	}
->>>>>>> 1a50b86e6300fdd165d4e3991f224f98a85c2957
+     
