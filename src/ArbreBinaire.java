@@ -1,3 +1,5 @@
+import java.util.ArrayList ; 
+
 
 public class ArbreBinaire {
 
@@ -14,9 +16,6 @@ public class ArbreBinaire {
 			this.dim = point.dim ; 
 		}	
 		
-		boolean equals(Noeud noeud) {
-			return this.point ==noeud.point ; 
-		}
 	} 
 	
 	ArbreBinaire filsGauche ; 
@@ -31,18 +30,12 @@ public class ArbreBinaire {
 		this.dim = 1 ;
 	}
 	
-	ArbreBinaire(Point point) { // crée un arbre à partir d'un point
-		this.racine = new Noeud(point) ; 
-		this.filsGauche = null ; 
-		this.filsDroit = null ;		
-		this.dim = 1 ;
-	}
-	
+
 	boolean estNul(){
 		return (this==null || this.racine==null); 
 	}
 	
-	public String toString() {
+	public String toString() { // cette fonction sert seulement à vérifier par des tests que les autres fonctions (addPoint, getParent...) sont bien fonctionnelles
 		
 		if (this.racine ==null) {
 			return "" ; 
@@ -86,7 +79,9 @@ public class ArbreBinaire {
 			
 	void addPointAux(Point point, int i) { //ajoute un point à l'arbre, cette fonction auxiliaire permet de gardr l'indice i correspondant à l'hyperplan du père en mémoire
 		
-		if (this.racine==null) { // l'emplacement est libre, on peut donc créer une feuille noeud
+		/* Ajout du nouveau point à un emplacement libre */
+		
+		if (this.racine==null) {
 			
 			this.dim = point.dim ; 
 
@@ -98,7 +93,7 @@ public class ArbreBinaire {
 			this.filsDroit.racine = null ; 
 
 			
-			if(i==this.dim){ 
+			if(i==this.dim){ // détermination de l'indice indiquant l(hyperplan correspondant au nouveau point
 				this.racine.indice = 1 ;
 			}
 			else {
@@ -106,7 +101,9 @@ public class ArbreBinaire {
 			}
 		}
 		
-		else { // récurrence 
+		/* Récurrence jusqu'à trouver un emplacement libre */
+		
+		else {
 			if(this.estaGauche(point)) {
 
 				this.filsGauche.addPointAux(point, i+1) ; 
@@ -156,7 +153,9 @@ public class ArbreBinaire {
 		else {
 			ArbreBinaire pere = root.getParent(this.racine.point) ; // On identifie le père de l'arbre dans lequel on est
 			
-			if (pere.filsGauche ==this) { // le point recherché est le fils gauche de son père
+			/* Si le point recherché est le fils gauche de son père */
+			
+			if (pere.filsGauche ==this) { 
 				
 				if (this.filsGauche.estNul() & this.filsDroit.estNul()) { // on est au niveau d'une feuille, il suffit de la supprimer 
 						this.racine = null ;
@@ -165,14 +164,16 @@ public class ArbreBinaire {
 				}
 				else {
 					Point mem = this.filsGauche.racine.point ; 
-					this.racine = this.filsDroit.racine ; // L'arbre considéré prend tous les attributs de son fils
+					this.racine = this.filsDroit.racine ; // L'arbre considéré prend tous les attributs de son fils droit
 					this.filsGauche = this.filsDroit.filsGauche ; 
 					this.filsDroit = this.filsDroit.filsDroit ; 
 					this.addPoint(mem) ; 				// on insère le fils gauche de l'ancien arbre au nouveau
 				}			
 			}
 			
-			else if (pere.filsDroit ==this) { // le point recherché est le fils droit de son père
+			/* Si le point recherché est le fils droit de son père */
+			
+			else if (pere.filsDroit ==this) { 
 	
 					if (this.filsGauche.estNul() & this.filsDroit.estNul()) { // on supprime la feuille
 						this.racine = null ; 
@@ -181,14 +182,16 @@ public class ArbreBinaire {
 					}
 					else {
 						Point mem = this.filsDroit.racine.point ; 
-						this.racine = this.filsGauche.racine ; // L'arbre considéré prend tous les attributs de son fils
+						this.racine = this.filsGauche.racine ; // L'arbre considéré prend tous les attributs de son fils gauche
 						this.filsDroit = this.filsGauche.filsDroit ; 
 						this.filsGauche = this.filsGauche.filsGauche ; 
 						this.addPoint(mem) ; 				// on insère le fils droit de l'ancien arbre au nouveau
 					}			
 			}
 			
-			else { // le point recherché n'est dans aucun des fils, il faut alors chercher plus profondément dans l'arbre
+			/* Si le point recherché n'est dans aucun des fils, il faut alors chercher plus profondément dans l'arbre */
+			
+			else {
 				if (this.estaGauche(point)){ 
 					this.filsGauche.removePointAux(point, root) ; 
 				}
@@ -205,20 +208,22 @@ public class ArbreBinaire {
 		removePointAux(point, this) ; 
 	}
 	
-	 Point getNearestNeighborAux(Point p){
+	 Point getNearestNeighbor(Point p){
 	    	
 	    	Point test = this.racine.point ; // ce point sera le plus proche voisin à la fin du code
 	    	ArbreBinaire noeud = this ; 
-	    	System.out.println(p.distance2(test)+"\n") ; 
-
 	    	
 	    	while((noeud.filsGauche !=null | noeud.filsDroit !=null) /*| (noeud.filsGauche.racine !=null | noeud.filsDroit.racine !=null)*/) { // tant qu'on n'est pas au niveau d'une feuille
 
-	    		if (p.distance2(noeud.racine.point) <  p.distance2(test))  { // on actualise le point qui peut être potentiellement le plus proche voisin
+		    	/* Actualisation éventuelle du point le plus proche */
+
+	    		if ( (0< p.distance2(noeud.racine.point)) & (p.distance2(noeud.racine.point) <  p.distance2(test)))  { // on actualise le point qui peut être potentiellement le plus proche voisin
 			    	test = noeud.racine.point ;
 	    		}
 				    
-			    if(noeud.estaGauche(p)) { // on descend dans l'arbre
+	    		/* Itération dans l'arbre */
+	    		
+			    if(noeud.estaGauche(p)) { 
 			    	noeud = noeud.filsGauche ; 
 			    }
 			    
@@ -227,6 +232,60 @@ public class ArbreBinaire {
 				    }
 	    	}
 	    	return test ; 
+	 }
+	 
+	 
+	 ArrayList<Point> getKNearestNeighbors(Point p, int k) { // renvoie les k plus proches voisins de p
+		 
+		 ArrayList<Point> voisins = new ArrayList<Point>() ;
+		 float max = 0 ; // c'est la distance maximale parmi les k points proches de p
+		 int indiceMax = 0 ; //c'est l'indice indiquant l'amplacement du point de distance maximale avec p
+		 int compteur = 0 ; 
+		 	 
+			Point test = this.racine.point ; // ce point sera le plus proche voisin à la fin du code
+		    ArbreBinaire noeud = this ; 
+		    	
+		    while((noeud.filsGauche !=null | noeud.filsDroit !=null) /*| (noeud.filsGauche.racine !=null | noeud.filsDroit.racine !=null)*/) { // tant qu'on n'est pas au niveau d'une feuille
+
+		    	float distTest = p.distance2(test) ; 
+		    	
+		    	/* Actualisation éventuelle de la liste voisin */
+		    	
+	    		if ( (0 < p.distance2(noeud.racine.point)) & (p.distance2(noeud.racine.point) <  distTest))  { 
+			    	test = noeud.racine.point ;
+			    	
+			    	if(compteur<k) {
+			    		voisins.add(test) ; 
+			    		if (max<=distTest) {
+			    			max = distTest ; 
+			    			indiceMax = compteur ; 
+			    		}			    		
+			    		compteur++ ; 
+			    	}
+			    	
+			    	else {
+			    		if (distTest<max){
+			    			voisins.remove(indiceMax) ; 
+			    			voisins.add(test) ; 
+			    			indiceMax = k ; 
+			    		}
+			    	}
+			    	
+			    	
+		    	}
+					
+	    		/* Itération dans l'arbre */ 
+	    		
+			    if(noeud.estaGauche(p)) { 
+			    	noeud = noeud.filsGauche ; 
+			    }
+				    
+			    else {
+				    noeud = noeud.filsDroit ; 
+				    }
+		    }  
+		    
+		 return voisins ;		 
 	 }
 
 }
