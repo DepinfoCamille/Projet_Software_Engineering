@@ -8,7 +8,7 @@ public class ArbreBinaire {
 
 int dim ; 
 	
-		public Noeud(Point point) { // Création d'une sous-classe Noeud, nécessitant un point caractérisant le noeud et la dimension de ce point
+		public Noeud(Point point) { // Création d'une souss-classe Noeud, nécessitant un point caractérisant le noeud et la dimension de ce point
 
 			this.point = point ;
 			this.indice = 1 ; 
