@@ -209,12 +209,12 @@ public class ArbreBinaire {
 	    	
 	    	Point test = this.racine.point ; // ce point sera le plus proche voisin à la fin du code
 	    	ArbreBinaire noeud = this ; 
-	    	System.out.println(p.distance(test)+"\n") ; 
+	    	System.out.println(p.distance2(test)+"\n") ; 
 
 	    	
 	    	while((noeud.filsGauche !=null | noeud.filsDroit !=null) /*| (noeud.filsGauche.racine !=null | noeud.filsDroit.racine !=null)*/) { // tant qu'on n'est pas au niveau d'une feuille
 
-	    		if (p.distance(noeud.racine.point) <  p.distance(test))  { // on actualise le point qui peut être potentiellement le plus proche voisin
+	    		if (p.distance2(noeud.racine.point) <  p.distance2(test))  { // on actualise le point qui peut être potentiellement le plus proche voisin
 			    	test = noeud.racine.point ;
 	    		}
 				    

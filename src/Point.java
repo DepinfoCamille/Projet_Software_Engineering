@@ -1,12 +1,10 @@
-
 public class Point {
 	
-	protected int coordonnees[];
-	int dim ; 
+	protected int coordonnees[], dim ; 
 	
-	Point(int coord[], int dim) {
+	Point(int coord[]) {
 		this.coordonnees = coord ; 
-		this.dim = dim ; 
+		this.dim = this.coordonnees.length; 
 	}
 	
 	public int getCoord(int x) {
@@ -14,24 +12,24 @@ public class Point {
 
 	}
 		
-	public int distance(Point p) {
+	public float distance(Point p) {
 		
-		int dist = 0;
+		float dist = 0;
 		
-		for (int i = 0 ; i < this.coordonnees.length ; i++) {
+		for (int i = 0 ; i < this.dim ; i++) {
 			
-			dist = dist + (this.coordonnees[i] - p.coordonnees[i]) ^ 2;
+			dist = dist + (this.coordonnees[i] - p.coordonnees[i])*(this.coordonnees[i] - p.coordonnees[i]);
 			
 		}
 		
 		return dist;
 	}
 	
-	int distanceAxe(Point point, int axe) { // renvoie la distance entre deux points selon l'axe en entrée
+	float distanceAxe(Point point, int axe) { // renvoie la distance entre deux points selon l'axe en entrÃ©e
 		return point.getCoord(axe)-this.getCoord(axe) ; 
 	}
 	
-	public String toString() {
+	public String toString() { // affiche un point 
 		String chaine = "["+this.coordonnees[0] ; 
 		for (int i =1 ; i<(this.coordonnees).length ; i++) {
 			chaine += ","+Integer.toString(this.coordonnees[i]) ;
@@ -54,3 +52,4 @@ public class Point {
 		return true;
 	}
 }
+
