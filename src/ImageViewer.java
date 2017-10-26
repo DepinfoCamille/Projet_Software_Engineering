@@ -12,9 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
-
 import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.EventQueue;
+
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,7 +47,8 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	private JButton buttonPalette = new JButton("Palette");
 	private JButton buttonPosteriser = new JButton("Posteriser");
 	private JButton buttonCompresser = new JButton("Compresser");
-
+	//histogram button
+	private JButton buttonHistogramme = new JButton("Histogramme");
 
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu fileMenu = new JMenu("File");
@@ -88,7 +89,16 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		JPanel compress = new JPanel();
 		compress.setLayout(new BoxLayout(compress, BoxLayout.PAGE_AXIS));
 		compress.add(buttonCompresser);
-
+		
+		//histogram button
+//		JPanel histogramme = new JPanel();
+//		post.setLayout(new BoxLayout(post, BoxLayout.PAGE_AXIS));
+		post.add(buttonHistogramme);
+		// Defines action associated to buttons
+		buttonHistogramme.addActionListener(new ButtonHistogramme());
+		
+		
+		
 		// Defines action associated to buttons
 	//	buttonCompresser.addActionListener(new ButtonListener());
 
@@ -136,7 +146,29 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		this.setVisible(true);
 		
 	}
-
+    
+	  /*void display() {
+	        JFrame f = new JFrame("Histogram");
+	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        f.add(createChartPanel());
+	        f.add(createControlPanel(), BorderLayout.SOUTH);
+	        f.add(new JLabel(new ImageIcon(image)), BorderLayout.WEST);
+	        f.pack();
+	        f.setLocationRelativeTo(null);
+	        f.setVisible(true);
+	    }*/
+	
+	class ButtonHistogramme implements ActionListener{
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			
+			 EventQueue.invokeLater(() -> {
+		            new Histogramme().display();
+		        });
+		}
+	}
+	
+	
 	/**
 	 * Class listening to a given button
 	 */
@@ -233,6 +265,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		
 
      }
+<<<<<<< HEAD
      
     
       
@@ -246,3 +279,6 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		
 	
 	
+=======
+	}
+>>>>>>> 1a50b86e6300fdd165d4e3991f224f98a85c2957
