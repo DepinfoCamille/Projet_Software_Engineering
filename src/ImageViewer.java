@@ -31,6 +31,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	private DisplayedImage ouputImage = new DisplayedImage();
 
 	private JButton buttonAction = new JButton("Action");
+	private JButton buttonref = new JButton("Quantification");
 	
     /*
     int image_h = inputImage.getHeight();
@@ -45,6 +46,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	private JButton buttonCompresser = new JButton("Compresser");
 
 
+	
 
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu fileMenu = new JMenu("File");
@@ -89,6 +91,11 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		JPanel compress = new JPanel();
 		compress.setLayout(new BoxLayout(compress, BoxLayout.PAGE_AXIS));
 		compress.add(buttonCompresser);
+		
+		JPanel ref1 = new JPanel();
+		ref1.setLayout(new BoxLayout(ref1, BoxLayout.PAGE_AXIS));
+		ref1.add(buttonref);
+		buttonref.addActionListener(new Quantization());
 
 		// Defines action associated to buttons
 	//	buttonCompresser.addActionListener(new ButtonListener());
@@ -103,6 +110,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		global.add(pal);
 		global.add(post);
 		global.add(compress);
+		global.add(ref1);
 	
 		global.add(output);
 		
@@ -198,8 +206,6 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	
 	*/
      class Chargement implements ActionListener{
-		
-
 		public void actionPerformed(ActionEvent arg0)
 		{  	
 			
@@ -211,7 +217,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			if (result == JFileChooser.APPROVE_OPTION) // Si on obtient le resultat souhaité
 			{
 				File SelectedImage = ImageChooser.getSelectedFile(); //Srocker l'image choisie dans un fichier
-				//String Path = SelectedImage.getAbsolutePath();  chemin de l'image selectionnée
+			//	String Path = SelectedImage.getAbsolutePath();  chemin de l'image selectionnée
 			
 				BufferedImage image = inputImage.getImage();
 				try {
@@ -223,19 +229,31 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 				inputImage.setImage(image);
 				repaint();
 				}
+		}
+			
+	
+}
+     
+         class Quantization implements ActionListener{
+    			public void actionPerformed(ActionEvent arg0)
+    			{  	   
+    				final int MASK = 0xfff0f0f0;    			
+    				 int w = inputImage.getWidth();
+    			     int h = inputImage.getHeight();
+    			     BufferedImage result = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    			     BufferedImage image = inputImage.getImage();
+    			     for(int x=0; x< w; x++){
+    			            for(int y=0; y< h; y++){
+    			            	 result.setRGB(x,y, ( image.getRGB(x, y) & MASK));
+    			            }
+    			            ouputImage.setImage(result);
+    						repaint();
 
+    			     }
+    			           
+    		    	          
+     }}}
 			
-			
-			
-				 
 				
-							
-		}}}
-		
-		
-		
-		
-     
-     
     
      
