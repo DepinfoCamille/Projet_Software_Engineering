@@ -80,13 +80,13 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		pal.setLayout(new BoxLayout(pal, BoxLayout.PAGE_AXIS));
 		pal.add(buttonPalette);
 		// Defines action associated to buttons
-	//	buttonPalette.addActionListener(new ButtonListener());
+	   buttonPalette.addActionListener(new ButtonListener());
 		
 		JPanel post = new JPanel();
 		post.setLayout(new BoxLayout(post, BoxLayout.PAGE_AXIS));
 		post.add(buttonPosteriser);
 		// Defines action associated to buttons
-		//buttonPosteriser.addActionListener(new ButtonListener());
+		buttonPosteriser.addActionListener(new ButtonListener());
 		
 		JPanel compress = new JPanel();
 		compress.setLayout(new BoxLayout(compress, BoxLayout.PAGE_AXIS));
@@ -98,7 +98,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		buttonref.addActionListener(new Quantization());
 
 		// Defines action associated to buttons
-	//	buttonCompresser.addActionListener(new ButtonListener());
+		buttonCompresser.addActionListener(new ButtonListener());
 
 		JPanel output = new JPanel();
 		output.setLayout(new BoxLayout(output, BoxLayout.PAGE_AXIS));
@@ -151,7 +151,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	/**
 	 * Class listening to a given button
 	 */
-	/*
+	
 	class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) 
 		{
@@ -204,7 +204,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		}
 	}
 	
-	*/
+	
      class Chargement implements ActionListener{
 		public void actionPerformed(ActionEvent arg0)
 		{  	
