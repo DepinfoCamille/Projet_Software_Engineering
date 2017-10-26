@@ -1,10 +1,12 @@
+
 public class ArbreBinaire {
 
 	private class Noeud {
 		
 		Point point ;
 		int indice ; 
-		int dim ; 
+
+int dim ; 
 	
 		public Noeud(Point point) { // Création d'une sous-classe Noeud, nécessitant un point caractérisant le noeud et la dimension de ce point
 
@@ -204,5 +206,5 @@ public class ArbreBinaire {
 	void removePoint(Point point) {
 		removePointAux(point, this) ; 
 	}
-	 
+
 }
