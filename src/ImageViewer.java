@@ -4,6 +4,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+
+
 import javax.swing.JButton;
 
 import javax.swing.JFileChooser;
@@ -11,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Graphics2D;
 
 import java.awt.event.ActionEvent;
@@ -44,8 +48,8 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	private JButton buttonPalette = new JButton("Palette");
 	private JButton buttonPosteriser = new JButton("Posteriser");
 	private JButton buttonCompresser = new JButton("Compresser");
-
-
+/**BOUTON HISTOGRAMME*/
+	private JButton buttonHistogramme = new JButton("Histogramme");
 	
 
 	private JMenuBar menuBar = new JMenuBar();
@@ -91,7 +95,11 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		JPanel compress = new JPanel();
 		compress.setLayout(new BoxLayout(compress, BoxLayout.PAGE_AXIS));
 		compress.add(buttonCompresser);
+		/**HISTOGRAMME*/
+		post.add(buttonHistogramme);
+		buttonHistogramme.addActionListener(new ButtonHistogramme());
 		
+	
 		JPanel ref1 = new JPanel();
 		ref1.setLayout(new BoxLayout(ref1, BoxLayout.PAGE_AXIS));
 		ref1.add(buttonref);
@@ -151,6 +159,16 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	/**
 	 * Class listening to a given button
 	 */
+	
+	class ButtonHistogramme implements ActionListener{
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			
+			 EventQueue.invokeLater(() -> {
+		            new Histogramme().display();
+		        });
+		}
+	}
 	
 	class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) 
