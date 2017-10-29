@@ -1,4 +1,3 @@
-
 import java.lang.Math;
 
 public class Point {
@@ -38,11 +37,11 @@ public class Point {
 	}
 	
 	
-	public int distance(Point p) {
+	public int distance2(Point p) {
 		int dist = 0,distance;
 		int x=this.dim;
 		for (int i = 0 ; i < x; i++) {
-			dist = dist + (this.coordonnees[i] - p.coordonnees[i]) ^ 2;
+			dist = dist + (this.coordonnees[i] - p.coordonnees[i])*(this.coordonnees[i] - p.coordonnees[i]);
 			}
 		distance=(int) Math.sqrt(dist);
 		return distance;
