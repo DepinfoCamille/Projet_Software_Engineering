@@ -6,7 +6,7 @@ public class Point {
 	protected int coordonnees[];
 	int dim ; 
 	
-	
+	Point() {}
 	
 	Point(int coord[]) {
 		this.coordonnees = coord ; 

@@ -260,14 +260,13 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
     			     int h = inputImage.getHeight();
     			     BufferedImage result = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
     			     BufferedImage image = inputImage.getImage();
-    			     for(int x=0; x< w; x++){
-    			            for(int y=0; y< h; y++){
+    			     for(int y=0; y< h; y++){
+    			            for(int x=0; x< w; x++){
     			            	 result.setRGB(x,y, ( image.getRGB(x, y) & MASK));
     			            }
-    			            ouputImage.setImage(result);
-    						repaint();
-
     			     }
+    			    ouputImage.setImage(result);
+					repaint();
     			           
     		    	          
      }}}
