@@ -1,0 +1,35 @@
+PLAN D'ATTAQUE POUR LE TD5
+
+Camille & Yosra
+==>	Refaire le cas d'égalité des points pour le KD Tree
+==>	Refaire la suppression removePoint
+==>	getNearestNeighbor à implémenter peut-être de manière récursive et faire attention au fait que la recherche du plus proche voisin peut nécessiter la visite des deux sous-arbres
+==>	Simplifier le code de getKNearestNeighbors en utilisant une classe pour représenter un tas
+==>	Faire attention aux attributs private et public (dans arbre binaire et Point)
+==>	FilsGauche et filsDroit à mettre dans la classe Nœud 
+==>	Enlever la dimension de l'arbre dans Nœud
+==>	Régler l'incompréhension de la fonction estaGauche
+
+Yosra 
+==>	Fermeture de l'histogramme n'entraine plus la fermeture de l'application
+
+Wafae
+==>	Palette, quantification et chargement à enlever de ImageViewer (mettre dans un autre fichier pour chacun)
+==>	Mettre tous les noms de fonctions et de classes en anglais
+==>	Correction des Warning
+==>	Ajouter des assert dans la fonction Point (notamment pour vérifier dans distanceSqr que les deux points on la même dimension)
+
+Sofien
+==>	Description Javadoc pour toutes les fonctions et classes
+==>	Modification de la sauvegarde pour choisir le nom et le format
+==>	Posterisation ne contient plus qu'une fonction statique prenant en paramètre une image et pas une classe entière
+==>	Réorganisation des boutons à la verticale 
+==>	Remplacement de la fonction distance2 par distanceSqr qui calcule le carré de la distance
+==>	Aération du code par ajout de tabulations (notamment dans Point et Posterisation) et de sauts de ligne (Histogramme)
+==>	Suppression des imports non utilisés
+
+Wafae et Sofien
+==>	Faire en sorte que la palette soit représentative de l'image quantifiée
+==>	Quantifier l'image en utilisant le KD Tree
+
+

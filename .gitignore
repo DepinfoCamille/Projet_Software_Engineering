@@ -1,0 +1,7 @@
+/bin/
+image_finale.png
+.settings/org.eclipse.jdt.core.prefs
+.project
+.classpath
+image_finale.png
+src/ImageViewer.java
