@@ -20,133 +20,127 @@ public class ArbreBinaire {
 			this.indice = 0 ; 
 		}
    	   	
-   	   		/**SI LE POINT EST A GAUCHE DE L'HYPERPLAN, C'EST DONC UN FILS GAUCHE*/
-   	   		/**RETOURNE TRUE S'IL SAGIT D'UN FILS GAUCHE*/
-   	   		/** l'hyperplan est caractérisé par l'indice i */
-   	   		boolean estaGauche(Point point) { 
-   	   			if(this.point.distanceAxe(point, this.indice)<0) { 
-   	   				if(point==pointE){
-   	   					System.out.println("E est à gauche") ; 
-   	   				}
-   	   				return true;
+   	   	/**SI LE POINT EST A GAUCHE DE L'HYPERPLAN, C'EST DONC UN FILS GAUCHE*/
+   	   	/**RETOURNE TRUE S'IL SAGIT D'UN FILS GAUCHE*/
+   	   	/** l'hyperplan est caractérisé par l'indice i */
+   	   	boolean estaGauche(Point point) { 
+   	   		if(this.point.distanceAxe(point, this.indice)<0) { 
+   	   			if(point==pointE){
+   	   				System.out.println("E est à gauche") ; 
    	   			}
-   	   			else {
-   	   				if(point==pointE){
-   	   					System.out.println("E est à droite") ; 
-   	   				}
-   	   				return false; 
-   	   			}
+   	   			return true;
    	   		}
+   	   		else {
+   	   			if(point==pointE){
+   	   				System.out.println("E est à droite") ; 
+   	   			}
+   	   			return false; 
+   	   		}
+   	   	}
+		
+		/** AJOUTE UN FILS AU NOEUD CONSIDERE */
+		void addFils(Point p) {
 			
-			/** AJOUTE UN FILS AU NOEUD CONSIDERE */
-			void addFils(Point p) {
-				
-				/* on met à jour l'indice du fils */			
-				int indiceFils ; 
-				if(this.indice==this.point.dim-1){ 
-					indiceFils = 0 ;
+			/* on met à jour l'indice du fils */			
+			int indiceFils ; 
+			if(this.indice==this.point.dim-1){ 
+				indiceFils = 0 ;
+			}
+			else {
+				indiceFils=this.indice+1 ; 
+			}
+			
+			/* on insère le point en tant que fils gauche ou droit */
+			if (this.estaGauche(p)){
+								
+				if (this.filsGauche==null) {
+					this.filsGauche = new Noeud(p) ;
+					this.filsGauche.indice = indiceFils ; 
 				}
 				else {
-					indiceFils=this.indice+1 ; 
-				}
-				
-				/* on insère le point en tant que fils gauche ou droit */
-				if (this.estaGauche(p)){
-									
-					if (this.filsGauche==null) {
-						this.filsGauche = new Noeud(p) ;
-						this.filsGauche.indice = indiceFils ; 
-					}
-					else {
-						filsGauche.addFils(p) ; // récurrence sur le fils gauche
-					}
-				}
-				
-				else {
-					
-					if (this.filsDroit==null) {
-						this.filsDroit = new Noeud(p) ; 
-						this.filsDroit.indice = indiceFils ; 
-					}
-					else {
-						filsDroit.addFils(p) ; // récurrence sur le fils droit
-					}
+					filsGauche.addFils(p) ; // récurrence sur le fils gauche
 				}
 			}
 			
-			/** DETERMINE SI LE NOEUD CONSIDERE EST UN FILS GAUCHE OU DROIT */
-			boolean estunfilsGauche(Noeud origine) {
-				return origine.getParent(this.point).filsGauche.point ==this.point ; 
-			}
-	
-			/** ENLEVE LE POINT p */
-			void removePoint(Point p, Noeud origine) {
+			else {
 				
-				if(this.point == p) { // on est arrivé au point à supprimer
-					
-					if(estunfilsGauche(origine)) {
-						origine.getParent(this.point).filsGauche = this.filsGauche ; 
-						this.filsGauche.filsDroit = this.filsDroit ;	
-					}
-					else {
-						origine.getParent(this.point).filsDroit  = this.filsDroit ; 
-						this.filsDroit.filsGauche = this.filsGauche ;						
-					}
+				if (this.filsDroit==null) {
+					this.filsDroit = new Noeud(p) ; 
+					this.filsDroit.indice = indiceFils ; 
 				}
-				else { // récurrence jusqu'à atteindre le point à supprimer
-					if (this.estaGauche(p)) {
-						this.filsGauche.removePoint(p, origine);
-					}
-					else {
-						this.filsDroit.removePoint(p, origine);
-					}
+				else {
+					filsDroit.addFils(p) ; // récurrence sur le fils droit
 				}
 			}
-			/** RENVOIE LE PERE DE p */ 
-			Noeud getParent(Point p) {
+		}
+		
+		/** DETERMINE SI LE NOEUD CONSIDERE EST UN FILS GAUCHE OU DROIT */
+		boolean estunfilsGauche(Noeud origine) {
+			return origine.getParent(this.point).filsGauche.point ==this.point ; 
+		}
+				/** ENLEVE LE POINT p */
+		void removePoint(Point p, Noeud origine) {
+			
+			if(this.point == p) { // on est arrivé au point à supprimer
 				
-				Noeud noeud = null, fils = this ; 
-				while (fils.point != p) {
-					noeud = fils;
-					if ( fils.estaGauche(p)){
-						fils = noeud.filsGauche;
-					} else {
-						fils = noeud.filsDroit;
-					}
-				}			
-				return noeud;
+				if(estunfilsGauche(origine)) {
+					origine.getParent(this.point).filsGauche = this.filsGauche ; 
+					this.filsGauche.filsDroit = this.filsDroit ;	
+				}
+				else {
+					origine.getParent(this.point).filsDroit  = this.filsDroit ; 
+					this.filsDroit.filsGauche = this.filsGauche ;						
+				}
 			}
+			else { // récurrence jusqu'à atteindre le point à supprimer
+				if (this.estaGauche(p)) {
+					this.filsGauche.removePoint(p, origine);
+				}
+				else {
+					this.filsDroit.removePoint(p, origine);
+				}
+			}
+			
+		/** RENVOIE LE PERE DE p */ 
+		Noeud getParent(Point p) {
+			
+			Noeud noeud = null, fils = this ; 
+			while (fils.point != p) {
+				noeud = fils;
+				if ( fils.estaGauche(p)){
+					fils = noeud.filsGauche;
+				} 
+				else {
+					fils = noeud.filsDroit;
+				}
+			}			
+			return noeud;
+		}
 						 
-			/** RENVOIE LE PLUS PROCHE VOISIN DE p */
-			 Noeud gNN2(Point p) {
-	
-			    Noeud voisin = this ; // noeud qui sera le plus proche voisin
-			    Noeud noeud = this  ; // noeud qui parcourt l'arbre
-			    float distanceMin = p.distance2(this.point);  // distance minimale entre p et les points de l'arbre
+		/** RENVOIE LE PLUS PROCHE VOISIN DE p */
+		 Noeud gNN2(Point p) {
+		    Noeud voisin = this ; // noeud qui sera le plus proche voisin
+		    Noeud noeud = this  ; // noeud qui parcourt l'arbre
+		    float distanceMin = p.distance2(this.point);  // distance minimale entre p et les points de l'arbre
 			    	   			
-			    /** ON PARCOURT UNE PREMIER FOIS L'ARBRE POUR TROUVER UN VOISIN PROCHE */		    
-			   	do { // tant qu'on n'est pas au niveau d'une feuille
-			   		
-				    	/** Actualisation éventuelle du point le plus proche */
-		    		if ( (0<= p.distance2(noeud.point)) && (p.distance2(noeud.point) <  distanceMin))  { // on actualise le point qui peut être potentiellement le plus proche voisin
-				    	voisin = noeud ;
-				    	distanceMin = p.distance2(noeud.point) ; 
-		    		}
-						    
-		    		/* Itération dans l'arbre */
-			    	if(noeud.filsGauche!=null && noeud.estaGauche(p)) { 
-		   				noeud = noeud.filsGauche ; 
-		    		}
-				   	else if (noeud.filsDroit!=null) {
-		    			noeud = noeud.filsDroit ; 
-		    		}
-		    	}while(noeud.filsGauche !=null || noeud.filsDroit !=null) ; 
-		    	// on itère encore une fois au niveau de la feuille
-		/*    	if ( (0<= p.distance2(noeud.point)) && (p.distance2(noeud.point) <  distanceMin))  { 
+		    /** ON PARCOURT UNE PREMIER FOIS L'ARBRE POUR TROUVER UN VOISIN PROCHE */		    
+		   	do { // tant qu'on n'est pas au niveau d'une feuille
+		   		
+			    	/** Actualisation éventuelle du point le plus proche */
+	    		if ( (0<= p.distance2(noeud.point)) && (p.distance2(noeud.point) <  distanceMin))  { // on actualise le point qui peut être potentiellement le plus proche voisin
 			    	voisin = noeud ;
 			    	distanceMin = p.distance2(noeud.point) ; 
-	    		}*/
-			    	
+	    		}
+					    
+	    		/* Itération dans l'arbre */
+		    	if(noeud.filsGauche!=null && noeud.estaGauche(p)) { 
+	   				noeud = noeud.filsGauche ; 
+	    		}
+			   	else if (noeud.filsDroit!=null) {
+	    			noeud = noeud.filsDroit ; 
+	    		}
+	    	}while(noeud.filsGauche !=null || noeud.filsDroit !=null) ; 
+
 		    /** ON PARCOURT L'ARBRE EN CONSIDERANT LES DISTANCES AUX HYPERPLANS */
 		    Noeud noeud2 = voisin ; // noeud qui parcourt la branche voisine du noeud voisin 
 		    // i.e si voisin est une branche gauche, noeud2 parcourt la branche droite et inversement
