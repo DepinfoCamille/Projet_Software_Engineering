@@ -32,12 +32,12 @@ public class Point {
 	
 	
 	
-	int distanceAxe(Point point, int axe) {
+	double distanceAxe(Point point, int axe) {
 		return point.getCoord(axe)-this.getCoord(axe) ; 
 	}
 	
 	
-	public int distance2(Point p) {
+	public double distance2(Point p) {
 		int dist = 0,distance;
 		int x=this.dim;
 		for (int i = 0 ; i < x; i++) {
