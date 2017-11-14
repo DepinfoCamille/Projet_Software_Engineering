@@ -74,20 +74,43 @@ public class ArbreBinaire {
 		boolean estunfilsGauche(Noeud origine) {
 			return origine.getParent(this.point).filsGauche.point ==this.point ; 
 		}
+		
+		
 		/** ENLEVE UN NOEUD */
-		void removePoint(Point p, Noeud origine) {
+		void removePoint(Point p, Noeud origine) { // origine est la racine de l'arbre
 			
-			if(this.point == p) {
-				
-				if(estunfilsGauche(origine)) {
-					origine.getParent(this.point).filsGauche = this.filsGauche ; 
-					this.filsGauche.filsDroit = this.filsDroit ;	
+			/* INITIALISATION */ 
+			if(this.filsGauche!=null && this.filsGauche.point==p){	/* fils Gauche */
+				Noeud memoire = this.filsGauche ; 
+				this.filsGauche = memoire.filsGauche ; // on remplace le noeud à supprimer par son filsGauche
+					
+				if(memoire.filsDroit!=null){ // on déplace son filsDroit s'il existe
+					if(this.filsGauche!=null){
+						this.filsGauche.addFils(memoire.filsDroit.point) ; 
+					}
+					else{
+						this.filsGauche = memoire.filsDroit ; 
+					}
 				}
-				else {
-					origine.getParent(this.point).filsDroit  = this.filsDroit ; 
-					this.filsDroit.filsGauche = this.filsGauche ;						
-				}
+					
 			}
+			else if(this.filsDroit!=null && this.filsDroit.point==p) {	/* fils Droit */
+				Noeud memoire = this.filsDroit ; 
+				this.filsDroit = memoire.filsDroit ; // on remplace le noeud à supprimer par son filsDroit
+				
+				if(memoire.filsGauche!=null){ // on déplace son filsGauche s'il existe
+					
+					if(this.filsDroit!=null){
+						this.filsDroit.addFils(memoire.filsGauche.point) ; 
+					}
+					else{
+						this.filsDroit = memoire.filsGauche ; 
+					}
+				}
+				
+			}
+			
+			/* RECURRENCE */ 
 			else { // récurrence jusqu'à atteindre le point à supprimer
 				if (this.estaGauche(p)) {
 					this.filsGauche.removePoint(p, origine);
@@ -96,7 +119,9 @@ public class ArbreBinaire {
 					this.filsDroit.removePoint(p, origine);
 				}
 			}
-		}
+		} 
+		
+		
 		/** TROUVE LE PERE DU POINT P */
 		Noeud getParent(Point p) {
 			
@@ -115,7 +140,7 @@ public class ArbreBinaire {
 		/** FONCTIONS AUXILIAIRES DE getNearestNeighbor */
 		
 		/** Trouve un voisin proche de noeud */
-		Noeud trouverVoisinProche(Point p, Noeud voisin, Noeud noeud, float distanceMin) {
+		Noeud trouverVoisinProche(Point p, Noeud voisin, Noeud noeud, double distanceMin) {
 			do { // tant qu'on n'est pas au niveau d'une feuille
 		   		
 					/** Actualisation éventuelle du point le plus proche */
@@ -130,6 +155,7 @@ public class ArbreBinaire {
 				}
 				else if (noeud.filsDroit!=null) {
 					noeud = noeud.filsDroit ; 
+
 				}
 			}while(noeud.filsGauche !=null || noeud.filsDroit !=null) ; 
 			
@@ -141,6 +167,7 @@ public class ArbreBinaire {
 		/* i.e si le noeud en entrée est un fils gauche, la fonction renvoie le fils droit du père */
 		Noeud brancheVoisine(Noeud voisin) { 
 			 Noeud noeud = this.getParent(voisin.point) ;
+			 
 			 if(noeud.filsGauche!=null && noeud.filsGauche.point == voisin.point){ // alors on explore l'arbre droit
 				 if(noeud.filsDroit !=null){
 					 return noeud.filsDroit ; 
@@ -181,24 +208,27 @@ public class ArbreBinaire {
 
 		    Noeud voisin = this ; // noeud qui sera le plus proche voisin
 		    Noeud noeud = this  ; // noeud qui parcourt l'arbre
-		    float distanceMin = p.distance2(this.point);  // distance minimale entre p et les points de l'arbre
+		    double distanceMin = p.distance2(this.point);  // distance minimale entre p et les points de l'arbre
 		    	   			
 		    /** ON PARCOURT UNE PREMIER FOIS L'ARBRE POUR TROUVER UN VOISIN PROCHE */		    
 		   	voisin = trouverVoisinProche(p, voisin, noeud, distanceMin) ; 
 		    	
 		   	/** ON PARCOURT L'ARBRE EN CONSIDERANT LES DISTANCES AUX HYPERPLANS */
-		   	Noeud noeud2 = voisin ; // noeud qui parcourt la branche voisine du noeud voisin 
+		  	Noeud noeud2 = voisin ; // noeud qui parcourt la branche voisine du noeud voisin 
 		   	// i.e si voisin est une branche gauche, noeud2 parcourt la branche droite et inversement
-		   	float distancePlan = p.distanceAxe(noeud2.point, noeud2.indice) ; // distance de p à l'hyperplan de noeud2 
+		   	double distancePlan = p.distanceAxe(noeud2.point, noeud2.indice) ; // distance de p à l'hyperplan de noeud2 
 		 
 		   	/* On détermine la branche voisine d'où part noeud2 */
 		   	noeud2 = brancheVoisine(voisin) ; 
-		 
+
+			if(noeud2==null){
+				return voisin;
+			}
 		   	/* On parcourt la branche voisine */
 		   	while(distancePlan*distancePlan<distanceMin*distanceMin) { 
 
 		   		/** actualisation du plus proche voisin */
-		   		float distanceTest = noeud2.point.distance2(voisin.point) ; 
+		   		double distanceTest = noeud2.point.distance2(voisin.point) ; 
 		   		// si noeud2 est plus proche que voisin, on actualise voisin
 		   		if (distanceTest*distanceTest <distanceMin*distanceMin) {
 		   			distanceMin = distanceTest ; 
@@ -209,15 +239,11 @@ public class ArbreBinaire {
 		   		/* Mise à jour de noeud2*/
 		   		noeud2 = parcourtBranche(p, noeud2, voisin) ; 
 		   		/* Mise à jour de distancePlan */
-		   		distancePlan =  p.distanceAxe(noeud2.point, noeud2.indice) ; 
-
-			 
+		   		distancePlan =  p.distanceAxe(noeud2.point, noeud2.indice) ;			 
 		 }
 		 
 		 return voisin ; 
 	 }
-		 
-   }
  
 	/**CONSTRUCTEUR DE L'ARBRE BINAIRE*/
        
