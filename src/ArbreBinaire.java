@@ -76,11 +76,49 @@ public class ArbreBinaire {
 		}
 		
 		
+		/**FONCTIONS AUXILIAIRES DE REMOVE POINT */
+		
+		/** suprime la racine de l'arbre */
+		void supprimeRacine(){
+			if(this.filsGauche==null&&this.filsDroit==null){ 
+				System.out.println("Arbre vide désormais") ; 
+				this.point = null ; ; 
+			}
+			else if(this.filsGauche==null){
+				this.point = this.filsDroit.point ; 
+				this.filsGauche = this.filsDroit.filsGauche ; 
+				this.filsDroit= this.filsDroit.filsDroit ; 
+
+			}
+			else if(this.filsDroit==null){
+				this.point = this.filsGauche.point ; 
+				this.filsDroit = this.filsGauche.filsDroit ; 
+				this.filsGauche= this.filsGauche.filsGauche ; 
+
+			}
+			else {
+				Noeud memoire = this.filsGauche ; 
+				this.point = this.filsGauche.point ; 
+				this.filsGauche = memoire.filsGauche ; // on remplace la racine par son filsGauche
+				
+				if(this.filsGauche!=null){ // on déplace son fils droit
+					this.filsGauche.addFils(memoire.filsDroit.point) ; 
+				}
+				else{
+					this.filsGauche = memoire.filsDroit ; 
+				}
+			}
+		}
+
 		/** ENLEVE UN NOEUD */
 		void removePoint(Point p, Noeud origine) { // origine est la racine de l'arbre
 			
+			if(origine.point == p){
+				supprimeRacine() ; 
+			}
+			
 			/* INITIALISATION */ 
-			if(this.filsGauche!=null && this.filsGauche.point==p){	/* fils Gauche */
+			else if(this.filsGauche!=null && this.filsGauche.point==p){	/* fils Gauche */
 				Noeud memoire = this.filsGauche ; 
 				this.filsGauche = memoire.filsGauche ; // on remplace le noeud à supprimer par son filsGauche
 					
@@ -120,6 +158,133 @@ public class ArbreBinaire {
 				}
 			}
 		} 
+		
+		/** TROUVE LE PERE DU POINT P */
+		Noeud getParent(Point p) {
+			
+			Noeud noeud = null, fils = this ; 
+			while (fils.point != p) {
+				noeud = fils;
+				if ( fils.estaGauche(p)){
+					fils = noeud.filsGauche;
+				} else {
+					fils = noeud.filsDroit;
+				}
+			}			
+			return noeud;
+		}
+		
+		/** getNN corrigé */
+		
+		Point getNNNoeud( Point p, Point candidat){
+			Noeud n = this ; 
+			if(p.distance2(n.point)<p.distance2(candidat)){
+				candidat = n.point ; 
+			}
+			double dist1D = n.point.distanceAxe(p, n.indice) ; 
+			Noeud n1 = (dist1D>0)? n.filsDroit:n.filsGauche ; // ? : on renvoie la première valeur si c'est vrai, sinon on renvoie la deuxième
+			Noeud n2 = (dist1D>0)? n.filsGauche:n.filsDroit ; 
+			
+			if(n1!=null){
+				candidat = n1.getNNNoeud(p,candidat) ; 
+			}
+			if(n2!=null && dist1D*dist1D<p.distance2(candidat)){
+				candidat = n2.getNNNoeud(p, candidat) ; 
+			}
+			return candidat ; 
+		} 
+	 
+	 
+		/** AFFICHE LE NOEUD */
+		
+		public String toString() {
+			
+			if (this ==null) {
+				return "" ; 
+			} 
+			
+			else{
+				if((this.filsDroit==null) && (this.filsGauche==null)) {
+					return this.point.toString() ; 
+				}
+				
+				else {
+				
+					if(this.filsGauche==null) {
+						return this.point.toString()+" ( null , " + this.filsDroit.toString() + " ) " ;
+					}
+				
+					else {
+						if(this.filsDroit==null) {
+							return this.point.toString()+" ( " + this.filsGauche.toString()+ " ,  null ) " ;
+						}
+			
+						else {
+							return this.point.toString()+" ( " +this.filsGauche.toString()+ " , " + this.filsDroit.toString() + " ) " ; 
+						}
+					}
+				}
+			} 
+			
+			
+		}		
+       }
+ 
+	/**CONSTRUCTEUR DE L'ARBRE BINAIRE*/
+       
+		public ArbreBinaire(Point p) {
+			 this.racine=new Noeud(p);
+		//	 this.dim = 0 ; 
+		}
+		
+		void addPoint(Point p) { 		
+				this.racine.addFils(p) ; 
+		}
+		
+		/** AFFICHE L'ARBRE CONSIDERE */
+		
+		public String toString(){
+			return racine.toString(); 
+		}
+		
+		public Noeud getParent(Point p) {
+			return this.racine.getParent(p) ; 
+		}
+
+		public Point getNN(Point p){
+			if (this.racine ==null){
+				return null ;
+			}
+			else {
+				return this.racine.getNNNoeud(p, this.racine.point);
+			}
+		}
+		
+		/**SUPPRESSION D'UN POINT DANS L'ARBRE*/
+		void removePoint(Point p) { 
+			this.racine.removePoint(p, this.racine) ; 
+		} 
+
+		
+		/** RENVOIE LES k PLUS PROCHES VOISINS DE p */
+		ArrayList<Point> getKNearestNeighbors(Point p, int k) { 
+			
+			 ArrayList<Point> voisins = new ArrayList<Point>() ; // liste des k plus proches voisins
+			 ArbreBinaire A = this ; // arbre sur lequel on va itérer
+			 Point pointProche ; // un des k plus proches voisins
+			 
+			 for(int i = 0 ; i<k ; i++) {
+			//	 pointProche = A.getNearestNeighbor(p).point ; 
+				 pointProche = A.getNN(p) ; 
+				 voisins.add(pointProche) ; 
+				 if(A!=null){
+					 A.removePoint(pointProche) ; 
+				 }
+			 }
+			 
+			 return voisins ; 
+		}
+	}
 		
 		
 		/** TROUVE LE PERE DU POINT P */
