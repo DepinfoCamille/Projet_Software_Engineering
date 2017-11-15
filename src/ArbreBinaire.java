@@ -447,12 +447,16 @@ public class ArbreBinaire {
 			 ArbreBinaire A = this ; // arbre sur lequel on va itérer
 			 Point pointProche ; // un des k plus proches voisins
 			 
-			 for(int i = 0 ; i<k ; i++) {
-				 pointProche = A.getNearestNeighbor(p).point ; 
-				 voisins.add(pointProche) ; 
-				 A.removePoint(pointProche) ; 
+			 for(int i = 0 ; i<k ; i++) { 
+				 if(A!=null){
+					 pointProche = A.getNN(p) ; 
+					 voisins.add(pointProche) ;
+					 A.removePoint(pointProche) ; 
+				 }
+				 else {
+					 i = k-1 ; // si A est nul, on a supprimé tous les noeuds de l'arbre
+				 }
 			 }
-			 
 			 return voisins ; 
 		}
 
