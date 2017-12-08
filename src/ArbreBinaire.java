@@ -83,6 +83,96 @@ public class ArbreBinaire {
 			}
 		}
 		
+		/** On considère que p est forcément dans l'arbre
+		 * @param p un Point
+		 * @return la profondeur à laquelle se trouve le point
+		 */
+		int getProfondeur(Point p, int profondeur){
+
+			if(this.point == p){
+				return profondeur+1 ; 
+			}
+			else {
+				
+				System.out.println("point arbre " +this.point+ " point cherché "+ p) ; 
+				if(this.filsGauche!=null){
+					return this.filsGauche.getProfondeur(p, profondeur+1); 
+				}
+					
+				else if(this.filsDroit!=null){
+					return this.filsDroit.getProfondeur(p, profondeur+1); 
+				}
+				
+				else{
+					return -1 ;  
+				}
+			}
+		}
+		
+		/**
+		 * @param p un Point
+		 * @return true si p est le point d'un des fils de this
+		 */
+		boolean estDansArbre(Point p){
+			
+			if(this==null){ // on a atteint une feuille
+				return false ;
+			}
+			
+			else if(p==this.point){
+				return true ; 
+			}
+			else
+				if(this.estaGauche(p)){
+					if( this.filsGauche!=null){
+						return this.filsGauche.estDansArbre(p) ; 
+					}
+					else{
+						return false ; 
+					}
+				}
+				else {
+					if( this.filsDroit!=null){
+						return this.filsDroit.estDansArbre(p) ; 
+					}
+					else{
+						return false ;
+					}
+				}		
+			}		
+		
+		
+		
+		/** Construit un arbre de profondeur profondeurArbre à partir de listePoints
+		 * On considère que la longueur de listePoints est supérieure à 2**profondeurArbre
+		 * @param listePoints la liste des points qui construisent l'arbre
+		 * @param profondeurArbre la profondeur voulue de l'arbre
+		 */
+		private void construitArbre(ArrayList<Point> listePoints, int profondeurArbre, int i, int nombreFeuillesActuelles, Noeud racine){
+			int nombreFeuillesVoulues = (int)Math.pow(2,profondeurArbre) ; 
+			Point point = listePoints.get(++i) ; 
+			int profondeur = racine.getProfondeur(point,1) ; 
+	
+			if(profondeur==profondeurArbre && nombreFeuillesActuelles==nombreFeuillesVoulues){
+				return;
+			}
+			
+			else {
+				if(profondeur==profondeurArbre && nombreFeuillesActuelles<nombreFeuillesVoulues){
+					nombreFeuillesActuelles ++ ; 
+			    }
+
+				this.addFils(point) ; 
+				
+				if(this.filsGauche!=null){
+					this.filsGauche.construitArbre(listePoints, profondeurArbre, i, nombreFeuillesActuelles, racine ) ; 
+				}
+				else if(this.filsDroit!=null){
+					this.filsDroit.construitArbre(listePoints, profondeurArbre, i, nombreFeuillesActuelles, racine) ; 
+				}
+			}
+		}
+		
 		/**FONCTIONS AUXILIAIRES DE REMOVE POINT */
 		
 		/** suprime la racine de l'arbre 
@@ -271,6 +361,19 @@ public class ArbreBinaire {
 		public ArbreBinaire(Point p) { // est défini par sa racine
 			 this.racine=new Noeud(p);
 		//	 this.dim = 0 ; 
+		}
+		
+		int getProfondeur(Point p){
+			return this.racine.getProfondeur(p, 1) ; 
+		}
+		
+		public ArbreBinaire(ArrayList<Point> listePoints, int profondeur){
+			this.racine = new Noeud(listePoints.get(0)); 
+			this.racine.construitArbre(listePoints, profondeur,0, 0, this.racine) ; 	
+		}
+		
+		public boolean estDansArbre(Point p){
+			return this.racine.estDansArbre(p) ; 
 		}
 		
 		/** AFFICHE L'ARBRE CONSIDERE */
