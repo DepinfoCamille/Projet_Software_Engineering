@@ -5,34 +5,7 @@ import java.util.ArrayList ;
 public class ArbreBinaire {
 	
 	Noeud racine;
-<<<<<<< HEAD
-	    
-       public class Noeud { 
-    	   Noeud filsGauche;
-    	   Noeud filsDroit;
-		   int indice;
-		   Point point ;
 
-		
-		private Noeud(Point point) { 
-				this.filsGauche = null ; 
-				this.filsDroit = null ; 
-				this.point = point ;
-				this.indice = 0 ; 
-			}
-		
-		@SuppressWarnings("unused")
-		public Point getPoint() {
-			return this.point;
-		}
-
-		/**SI LE POINT EST A GAUCHE DE L'HYPERPLAN, C'EST DONC UN FILS GAUCHE*/
-		/**RETOURNE TRUE S'IL SAGIT D'UN FILS GAUCHE*/
-		/** l'hyperplan est caractérisé par l'indice i */
-		boolean estaGauche(Point point) {
-=======
-	   
-	
 //////////////////////////////CLASSE NOEUD PRIVEE//////////////////////////////
 				/* Permet de contruire le KDnode ArbreBinaire */
 	
@@ -50,13 +23,18 @@ public class ArbreBinaire {
 			this.point = point ;
 			this.indice = 0 ; 
 		}
+		
+		@SuppressWarnings("unused")
+		public Point getPoint() {
+			return this.point;
+		}
+	   
 
 		/** Indique si un point est au niveau du sous-arbre gauche ou non
 		 * @return true si le point est "à gauche" de l'hyperplan
 		 * @ param Point point
 		 */
 		boolean estaGauche(Point point) { 
->>>>>>> master
 			if(this.point.distanceAxe(point, this.indice)<0) { 
 				return true;
 			}
@@ -81,7 +59,7 @@ public class ArbreBinaire {
 			}
 			
 			/* on insère le point en tant que fils gauche ou droit */
-			if (this.estaGauche(p)){ indiceFils // en tant que fils gauche
+			if (this.estaGauche(p)){ // en tant que fils gauche
 								
 				if (this.filsGauche==null) {
 					this.filsGauche = new Noeud(p) ;
@@ -249,7 +227,7 @@ public class ArbreBinaire {
 				candidat = n2.getNNNoeud(p, candidat) ; 
 			}
 			return candidat ; 
-		} 
+		}
 	 
 	 
 		/** AFFICHE LE NOEUD
@@ -259,7 +237,7 @@ public class ArbreBinaire {
 		*/		
 		public String toString() {
 			
-			if (this ==null) {
+			if (this == null) {
 				return "" ; 
 			} 	
 			else{
@@ -309,14 +287,6 @@ public class ArbreBinaire {
 				this.racine.addFils(p) ; 
 		}
 		
-		public Point getNN(Point p){
-			if (this.racine ==null){
-				return null ;
-			}
-			else {
-				return this.racine.getNNNoeud(p, this.racine.point);
-			}
-		}
 		
 		/** supprime de l'arbre le point considéré
 		* @param ArbreBinaire l'arbre dont on veut supprimer le point, 

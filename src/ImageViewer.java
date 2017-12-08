@@ -165,6 +165,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			ouputImage.setImage(image_palette);
 			repaint();
 			System.out.println("Palette affichée");
+			
 		}
 	}
 	
@@ -209,6 +210,8 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			
 			ArbreBinaire arbre = null;
 			
+			ArrayList<Point> tous_les_pixels = new ArrayList<Point>();
+			
 			for (int j = 0; j < image_h; j++) {
 	    	    for (int i = 0; i < image_w; i++) {
 	    	    	
@@ -221,45 +224,44 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	    	    	int tab[] = {rouge,vert,bleu};
 	    	    	Point point = new Point(tab);
 	    	    	
+	    	    	tous_les_pixels.add(point);
+	    	    	
+	    	    	/*
 	    	    	if (i == 0 && j == 0) {
 	    	    		arbre = new ArbreBinaire(point);
 	    	    	}
 	    	    	else {
 	    	    		arbre.addPoint(point);
 	    	    	}
+	    	    	*/
 
 	    	    }
 			}
 			
-
+			ArrayList<Integer> nouvelles_couleurs = new ArrayList<Integer>();
+			
+			for (int i = 0; i < tous_les_pixels.size(); i++) {
+				
+				Point nouveau_point = arbre.getNN(tous_les_pixels.get(i));
+				
+				int nouveau_rouge = nouveau_point.getCoord(0);
+    	    	int nouveau_vert = nouveau_point.getCoord(1);
+    	    	int nouveau_bleu = nouveau_point.getCoord(2);
+    	    	
+    	    	Color nouvelle_couleur = new Color(nouveau_rouge,nouveau_vert,nouveau_bleu);
+    	    	int rgb = nouvelle_couleur.getRGB();
+    	    	nouvelles_couleurs.add(rgb);
+				
+			}
+			
+			int k = 0;
 			for (int j = 0; j < image_h; j++) {
 	    	    for (int i = 0; i < image_w; i++) {
-	    	    	
-	    	    	Color couleur = new Color(image_entrante.getRGB(i,j));
-
-	    	    	int rouge = couleur.getRed();
-	    	    	int vert = couleur.getGreen();
-	    	    	int bleu = couleur.getBlue();
-	    	    	
-	    	    	int tab[] = {rouge,vert,bleu};
-	    	    	Point point = new Point(tab);
-	    	    	
-	    	    	System.out.println("sss");
-	    	    	ArbreBinaire.Noeud noeud = arbre.getNearestNeighbor(point);
-	    	    	System.out.println("sss");
-	    	    	Point nouveau_point = noeud.getPoint();
-	    	    	
-	    	    	int nouveau_rouge = nouveau_point.getCoord(0);
-	    	    	int nouveau_vert = nouveau_point.getCoord(1);
-	    	    	int nouveau_bleu = nouveau_point.getCoord(2);
-	    	    	
-	    	    	Color nouvelle_couleur = new Color(nouveau_rouge,nouveau_vert,nouveau_bleu);
-	    	    	int rgb = nouvelle_couleur.getRGB();
-	    	    	image_sortante.setRGB(i,j,rgb);
-	    	 
+	    	    	image_sortante.setRGB(i,j,nouvelles_couleurs.get(k));
+	    	    	k++;
 	    	    }
 			}
-
+	    	    	
 		    ouputImage.setImage(image_sortante);
 			repaint();
 			System.out.println("Quantification achevée");

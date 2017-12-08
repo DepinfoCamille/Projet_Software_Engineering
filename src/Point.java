@@ -30,13 +30,8 @@ public class Point {
 
 	}  
 	
-	
-<<<<<<< HEAD
-	int distanceAxe(Point point, int axe) {
-=======
-	
+
 	double distanceAxe(Point point, int axe) {
->>>>>>> master
 		return point.getCoord(axe)-this.getCoord(axe) ; 
 	}
 	
