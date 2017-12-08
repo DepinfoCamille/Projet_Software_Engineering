@@ -6,11 +6,11 @@ public class ArbreBinaire {
 	
 	Noeud racine;
 	    
-       private class Noeud { 
+       public class Noeud { 
     	   Noeud filsGauche;
     	   Noeud filsDroit;
-    	   Point point ;
 		   int indice;
+		   Point point ;
 
 		
 		private Noeud(Point point) { 
@@ -19,11 +19,16 @@ public class ArbreBinaire {
 				this.point = point ;
 				this.indice = 0 ; 
 			}
+		
+		@SuppressWarnings("unused")
+		public Point getPoint() {
+			return this.point;
+		}
 
 		/**SI LE POINT EST A GAUCHE DE L'HYPERPLAN, C'EST DONC UN FILS GAUCHE*/
 		/**RETOURNE TRUE S'IL SAGIT D'UN FILS GAUCHE*/
 		/** l'hyperplan est caractérisé par l'indice i */
-		boolean estaGauche(Point point) { 
+		boolean estaGauche(Point point) {
 			if(this.point.distanceAxe(point, this.indice)<0) { 
 				return true;
 			}
