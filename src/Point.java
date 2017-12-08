@@ -19,8 +19,8 @@ public class Point {
 		x=this.dim;
 		int T[]= new int[x];
 		for(i=0;i<dim;i++) {
-		T[i]=this.coordonnees[i];
-	}
+			T[i]=this.coordonnees[i];
+		}
 		return T;
 	}
 	
@@ -29,7 +29,6 @@ public class Point {
 		return this.coordonnees[x];
 
 	}  
-	
 	
 	
 	int distanceAxe(Point point, int axe) {
