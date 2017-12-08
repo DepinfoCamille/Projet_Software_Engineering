@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-
 @SuppressWarnings("serial")
 
 public class ImageViewer extends JFrame /*implements ActionListener*/
@@ -208,8 +207,6 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		
 			BufferedImage image_sortante = new BufferedImage(image_w, image_h, image_entrante.getType());
 			
-			ArbreBinaire arbre = null;
-			
 			ArrayList<Point> tous_les_pixels = new ArrayList<Point>();
 			
 			for (int j = 0; j < image_h; j++) {
@@ -226,23 +223,22 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	    	    	
 	    	    	tous_les_pixels.add(point);
 	    	    	
-	    	    	/*
-	    	    	if (i == 0 && j == 0) {
-	    	    		arbre = new ArbreBinaire(point);
-	    	    	}
-	    	    	else {
-	    	    		arbre.addPoint(point);
-	    	    	}
-	    	    	*/
-
 	    	    }
 			}
+			
+			int profondeur = 4;
+            ArbreBinaire arbre = new ArbreBinaire(tous_les_pixels, profondeur);
+            
+            ArrayList<Point> palette_feuilles = new ArrayList<Point>();
+            arbre.getFeuilles(arbre.getRacine(),palette_feuilles);
+         
+            ArbreBinaire palette_arbre = new ArbreBinaire(palette_feuilles, Integer.MAX_VALUE);
 			
 			ArrayList<Integer> nouvelles_couleurs = new ArrayList<Integer>();
 			
 			for (int i = 0; i < tous_les_pixels.size(); i++) {
 				
-				Point nouveau_point = arbre.getNN(tous_les_pixels.get(i));
+				Point nouveau_point = palette_arbre.getNN(tous_les_pixels.get(i));
 				
 				int nouveau_rouge = nouveau_point.getCoord(0);
     	    	int nouveau_vert = nouveau_point.getCoord(1);

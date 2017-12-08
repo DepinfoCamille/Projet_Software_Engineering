@@ -310,6 +310,25 @@ public class ArbreBinaire {
 			}
 		}
 		
+		public Noeud getRacine() {
+			return this.racine;
+		}
+		
+		public void getFeuilles(Noeud noeud, ArrayList<Point> feuilles)
+		{
+			if(noeud.filsGauche ==null && noeud.filsDroit ==null) {
+				feuilles.add(noeud.point);
+			} 
+			else {
+				if(noeud.filsGauche != null) {
+					getFeuilles(noeud.filsGauche, feuilles);
+				}
+				if(noeud.filsDroit !=null) {
+			    	getFeuilles(noeud.filsDroit, feuilles);
+				}
+			}
+		 }
+		
 		/** renvoie les k plus proches voisins du point en entrée
 		* @param Point p le point dont on cherche les plus proches voisins,
 		* k le nombre de voisins recherchés
