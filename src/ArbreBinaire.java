@@ -140,46 +140,48 @@ public class ArbreBinaire {
 			}		
 		
 		
-		
 		/** Construit un arbre de profondeur profondeurArbre à partir de listePoints
-		 * On considère que la longueur de listePoints est supérieure à 2**profondeurArbre
 		 * @param listePoints la liste des points qui construisent l'arbre
 		 * @param profondeurArbre la profondeur voulue de l'arbre
+		 * @param i l'indice qui parcourt listePoints
+		 * @param nombreFeuillesActuelles le nombre de feuilles de l'arbre en construction
 		 */
-		private void construitArbre(ArrayList<Point> listePoints, int profondeurArbre, int i, int nombreFeuillesActuelles, Noeud racine){
+		private void construitArbre(ArrayList<Point> listePoints, int profondeurArbre, int i, int nombreFeuillesActuelles){
 			int nombreFeuillesVoulues = (int)Math.pow(2,profondeurArbre) ; 
+			
+			if (i+1==listePoints.size()){
+				return ; 
+			}
+			System.out.println("i : " + i + " size : " + listePoints.size()) ; 
 			Point point = listePoints.get(++i) ; 
 			
-			if(racine.estDansArbre(point)){
-				this.construitArbre(listePoints, profondeurArbre, ++i, nombreFeuillesActuelles, racine) ; 
+			if(racine.estDansArbre(point)){ // on n'ajoute pas point
+				this.construitArbre(listePoints, profondeurArbre, ++i, nombreFeuillesActuelles) ; 
 			}
 			
-			else{
+			else{ // ajout de point
 			
 				this.addFils(point) ; 
 				int profondeur = racine.getProfondeur(point,1) ; 
+				System.out.println("arbre : " + racine + "point : " + point + "profondeur "+  profondeur);
 		
 				if(profondeur==profondeurArbre && nombreFeuillesActuelles==nombreFeuillesVoulues 
-					|| i==listePoints.size()-1){
+					|| i==listePoints.size()-1){ // on a remplit l'arbre ou on a atteint la fin de listePoints
 					return;
 				}
 				
 				else {
 					if(profondeur==profondeurArbre && nombreFeuillesActuelles<nombreFeuillesVoulues){
-						nombreFeuillesActuelles ++ ; 
+						nombreFeuillesActuelles ++ ; // on a ajouté une feuille
 				    }
 	
-					if(profondeur>profondeurArbre){
+					if(profondeur>profondeurArbre){ // point dépace la profondeur d'arbre souhaitée, on itère dans la liste
 						this.removePoint(point, racine) ;
-						this.construitArbre(listePoints, profondeurArbre, ++i, nombreFeuillesActuelles, racine) ; 
+						this.construitArbre(listePoints, profondeurArbre, ++i, nombreFeuillesActuelles) ; 
 						
 					}
-					
-					else if(this.filsGauche!=null){
-						this.filsGauche.construitArbre(listePoints, profondeurArbre, i, nombreFeuillesActuelles, racine ) ; 
-					}
-					else if(this.filsDroit!=null){
-						this.filsDroit.construitArbre(listePoints, profondeurArbre, i, nombreFeuillesActuelles, racine) ; 
+					else{
+						this.construitArbre(listePoints, profondeurArbre, ++i, nombreFeuillesActuelles) ; 
 					}
 				}
 			}
@@ -381,7 +383,7 @@ public class ArbreBinaire {
 		
 		public ArbreBinaire(ArrayList<Point> listePoints, int profondeur){
 			this.racine = new Noeud(listePoints.get(0)); 
-			this.racine.construitArbre(listePoints, profondeur,0, 0, this.racine) ; 	
+			this.racine.construitArbre(listePoints, profondeur,0, 0) ; 	
 		}
 		
 		public boolean estDansArbre(Point p){
