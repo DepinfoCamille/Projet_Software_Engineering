@@ -19,7 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 
@@ -40,6 +40,8 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	private JMenuItem itemCharger = new JMenuItem("Charger");
 	private JMenuItem itemSave = new JMenuItem("Save");
 	private JMenuItem itemClose = new JMenuItem("Close");
+	private JMenuItem itemOpenComp = new JMenuItem("Open compressed");
+	private JMenuItem itemSaveComp = new JMenuItem("Save compressed");
 	
 	public ImageViewer () {
 		
@@ -86,17 +88,21 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
             }
 		});
 		
+		itemCharger.addActionListener(new Chargement());
+		
 		itemClose.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			} 
 		});
 
-		itemCharger.addActionListener(new Chargement());
-
 		this.fileMenu.add(itemCharger);
 		this.fileMenu.addSeparator();
 		this.fileMenu.add(itemSave);
+		this.fileMenu.addSeparator();
+		this.fileMenu.add(itemOpenComp);
+		this.fileMenu.addSeparator();
+		this.fileMenu.add(itemSaveComp);
 		this.fileMenu.addSeparator();
 		this.fileMenu.add(itemClose);
 		
@@ -137,21 +143,21 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		{
 			
 			BufferedImage image_entrante = inputImage.getImage();
-			ArrayList<Point3> palette_couleurs = new ArrayList<Point3>();
+			ArrayList<Point3> palette = new ArrayList<Point3>();
 			
 			Point3 col1 = new Point3(54,100,92);
 			Point3 col2 = new Point3(154,50,75);
 			Point3 col3 = new Point3(200,100,150);
 			
-			palette_couleurs.add(col1);
-			palette_couleurs.add(col2);
-			palette_couleurs.add(col3);
+			palette.add(col1);
+			palette.add(col2);
+			palette.add(col3);
 			
-			BufferedImage image_palette = new BufferedImage(palette_couleurs.size()*10, 10, image_entrante.getType());
+			BufferedImage image_palette = new BufferedImage(palette.size()*10, 10, image_entrante.getType());
 
-			for (int i = 0; i < palette_couleurs.size(); i++) {
+			for (int i = 0; i < palette.size(); i++) {
 				
-				Color couleur = new Color(palette_couleurs.get(i).getCoord(0),palette_couleurs.get(i).getCoord(1),palette_couleurs.get(i).getCoord(2));
+				Color couleur = new Color(palette.get(i).getCoord(0),palette.get(i).getCoord(1),palette.get(i).getCoord(2));
 
 			    for (int y = 0; y < 10; y++) {
 			        for (int x = 0; x < 10; x++) {
@@ -261,6 +267,36 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 		    ouputImage.setImage(image_sortante);
 			repaint();
 			System.out.println("Quantification achevée");
+			
+			/*
+			
+			final int MASK = 0xfff0f0f0;    			
+    		int image_w = inputImage.getWidth();
+    		int image_h = inputImage.getHeight();
+    		
+    		BufferedImage image_sortante = new BufferedImage(image_w, image_h, image_entrante.getType());
+    		BufferedImage image_entrante = inputImage.getImage();
+    		
+    		for(int j=0; j < image_h; j++){
+    			for(int i=0; i < image_w; i++){
+    			
+    				Color couleur = new Color(image_entrante.getRGB(i,j));
+
+	    	    	int rouge = couleur.getRed();
+	    	    	int vert = couleur.getGreen();
+	    	    	int bleu = couleur.getBlue();
+	    	    	
+	    	    	int rgb = nouvelle_couleur.getRGB();
+	    	    	
+    				image_sortante.setRGB(i, j, (image.getRGB(i,j) & MASK));
+    			
+    			}
+    		}
+    		
+    		ouputImage.setImage(result);
+			repaint();
+			
+			*/
 			
 		}
 		
