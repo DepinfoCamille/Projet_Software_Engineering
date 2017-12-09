@@ -89,13 +89,11 @@ public class ArbreBinaire {
 		 */
 		int getProfondeur(Point p, int profondeur){
 
-			if(this.point == p){
-				return profondeur+1 ; 
+			if(this.point == p){ // initialisation 
+				return profondeur ; 
 			}
-			else {
-				
-				System.out.println("point arbre " +this.point+ " point cherché "+ p) ; 
-				if(this.filsGauche!=null){
+			else { // récurrence
+				if(this.filsGauche!=null && this.estaGauche(p)){
 					return this.filsGauche.getProfondeur(p, profondeur+1); 
 				}
 					
@@ -103,7 +101,7 @@ public class ArbreBinaire {
 					return this.filsDroit.getProfondeur(p, profondeur+1); 
 				}
 				
-				else{
+				else{ // erreur, p n'est pas dans l'arbre
 					return -1 ;  
 				}
 			}
@@ -151,24 +149,38 @@ public class ArbreBinaire {
 		private void construitArbre(ArrayList<Point> listePoints, int profondeurArbre, int i, int nombreFeuillesActuelles, Noeud racine){
 			int nombreFeuillesVoulues = (int)Math.pow(2,profondeurArbre) ; 
 			Point point = listePoints.get(++i) ; 
-			int profondeur = racine.getProfondeur(point,1) ; 
-	
-			if(profondeur==profondeurArbre && nombreFeuillesActuelles==nombreFeuillesVoulues){
-				return;
+			
+			if(racine.estDansArbre(point)){
+				this.construitArbre(listePoints, profondeurArbre, ++i, nombreFeuillesActuelles, racine) ; 
 			}
 			
-			else {
-				if(profondeur==profondeurArbre && nombreFeuillesActuelles<nombreFeuillesVoulues){
-					nombreFeuillesActuelles ++ ; 
-			    }
-
+			else{
+			
 				this.addFils(point) ; 
-				
-				if(this.filsGauche!=null){
-					this.filsGauche.construitArbre(listePoints, profondeurArbre, i, nombreFeuillesActuelles, racine ) ; 
+				int profondeur = racine.getProfondeur(point,1) ; 
+		
+				if(profondeur==profondeurArbre && nombreFeuillesActuelles==nombreFeuillesVoulues 
+					|| i==listePoints.size()-1){
+					return;
 				}
-				else if(this.filsDroit!=null){
-					this.filsDroit.construitArbre(listePoints, profondeurArbre, i, nombreFeuillesActuelles, racine) ; 
+				
+				else {
+					if(profondeur==profondeurArbre && nombreFeuillesActuelles<nombreFeuillesVoulues){
+						nombreFeuillesActuelles ++ ; 
+				    }
+	
+					if(profondeur>profondeurArbre){
+						this.removePoint(point, racine) ;
+						this.construitArbre(listePoints, profondeurArbre, ++i, nombreFeuillesActuelles, racine) ; 
+						
+					}
+					
+					else if(this.filsGauche!=null){
+						this.filsGauche.construitArbre(listePoints, profondeurArbre, i, nombreFeuillesActuelles, racine ) ; 
+					}
+					else if(this.filsDroit!=null){
+						this.filsDroit.construitArbre(listePoints, profondeurArbre, i, nombreFeuillesActuelles, racine) ; 
+					}
 				}
 			}
 		}
