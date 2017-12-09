@@ -30,11 +30,13 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	private DisplayedImage inputImage = new DisplayedImage(); 
 	private DisplayedImage ouputImage = new DisplayedImage();
 	
+	//implemented buttons
 	private JButton buttonHistogramme = new JButton("Histogramme");
 	private JButton buttonPosteriser = new JButton("Posteriser");
 	private JButton buttonPalette = new JButton("Palette");
 	private JButton buttonQuantifier = new JButton("Quantifier");
 	
+	//Implemented Menu bar
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu fileMenu = new JMenu("File");
 	private JMenuItem itemCharger = new JMenuItem("Charger");
@@ -114,7 +116,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	}
 
 	/**
-	 * Class listening to a given button
+	 * Histogramm function
 	 */
 	
 	class ButtonHistogram implements ActionListener{
@@ -134,14 +136,16 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			BufferedImage image_sortante = p.posteriser();
 		    ouputImage.setImage(image_sortante);
 			repaint();
-			System.out.println("Posterisation achevée");
+			System.out.println("Posterisation achevÃ©e");
 		}
 	}
 	
+	/**
+	 * function that displays a color palette
+	 */
 	class ButtonPalette implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) 
-		{
-			
+		{			
 			BufferedImage image_entrante = inputImage.getImage();
 			ArrayList<Point3> palette = new ArrayList<Point3>();
 			
@@ -169,25 +173,26 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			
 			ouputImage.setImage(image_palette);
 			repaint();
-			System.out.println("Palette affichée");
+			System.out.println("Palette affichÃ©e");
 			
 		}
 	}
-	
-	
+    /**
+      *Function that opens an image
+    **/
      class Chargement implements ActionListener{
 		public void actionPerformed(ActionEvent arg0)
 		{  	
 			
 			JFileChooser ImageChooser = new JFileChooser();  //Selectionner
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE" , "jpg" , "png" , "gif"); //Définir l'extention de l'image
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE" , "jpg" , "png" , "gif"); //DÃ©finir l'extention de l'image
 			ImageChooser.addChoosableFileFilter(filter); //Lien entre  le ImageChooser et le Filter pour definir l'extention que L'imageChooser doit avoir
-			int result = ImageChooser.showSaveDialog(null); //resultat de l'opération
+			int result = ImageChooser.showSaveDialog(null); //resultat de l'opÃ©ration
 			
-			if (result == JFileChooser.APPROVE_OPTION) // Si on obtient le resultat souhaité
+			if (result == JFileChooser.APPROVE_OPTION) // Si on obtient le resultat souhaitÃ©
 			{
 				File SelectedImage = ImageChooser.getSelectedFile(); //Stocker l'image choisie dans un fichier
-			//	String Path = SelectedImage.getAbsolutePath();  chemin de l'image selectionnée
+			//	String Path = SelectedImage.getAbsolutePath();  chemin de l'image selectionnÃ©e
 			
 				BufferedImage image = inputImage.getImage();
 				try {
@@ -201,7 +206,9 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 			}
 		}
 	}
-     
+      /**
+      *Function that quantify an image using the KDtree
+    **/
      class ButtonQuantization implements ActionListener{
     	 
 		public void actionPerformed(ActionEvent arg0){
@@ -266,7 +273,7 @@ public class ImageViewer extends JFrame /*implements ActionListener*/
 	    	    	
 		    ouputImage.setImage(image_sortante);
 			repaint();
-			System.out.println("Quantification achevée");
+			System.out.println("Quantification achevÃ©e");
 			
 			/*
 			
